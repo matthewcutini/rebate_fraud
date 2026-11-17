@@ -15,3 +15,4 @@
 - **Changed:** Added a build-stopping Lakebase preflight, a seven-hour scope, explicit stage dependencies, table grains, evidence files, and a locked temporal evaluation protocol.
 - **Why:** The plan must be implementable without hiding platform gaps or allowing disconnected demo stages.
 - **Verified:** Checked the plan against the approved use case, selected design decisions, five-gold-table limit, required evidence, and manual-trigger requirement.
+- **Approval:** The user approved `BUILD_PLAN.md` on 2026-11-17.
