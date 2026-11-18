@@ -1,0 +1,14 @@
+resources:
+  jobs:
+    apply_governance:
+      name: ${bundle.target}-rebate-fraud-apply-governance
+      performance_target: STANDARD
+      tags:
+        aidevkit_project: rebate_fraud
+      tasks:
+        - task_key: apply_governance
+          sql_task:
+            file:
+              path: ../src/governance/governance.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}

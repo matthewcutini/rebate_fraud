@@ -74,6 +74,16 @@ SELECT
   claims.pharmacy_id,
   entities.legal_name AS pharmacy_name,
   entities.entity_status,
+  CASE
+    WHEN regexp_extract(entities.pharmacy_address, ', ([A-Z]{2}) [0-9]{5}$', 1) IN ('CT', 'ME', 'MA', 'NH', 'RI', 'VT', 'NJ', 'NY', 'PA') THEN 'NORTHEAST'
+    WHEN regexp_extract(entities.pharmacy_address, ', ([A-Z]{2}) [0-9]{5}$', 1) IN ('IL', 'IN', 'IA', 'KS', 'MI', 'MN', 'MO', 'NE', 'ND', 'OH', 'SD', 'WI') THEN 'MIDWEST'
+    WHEN regexp_extract(entities.pharmacy_address, ', ([A-Z]{2}) [0-9]{5}$', 1) IN ('AL', 'AR', 'DE', 'FL', 'GA', 'KY', 'LA', 'MD', 'MS', 'NC', 'OK', 'SC', 'TN', 'TX', 'VA', 'WV') THEN 'SOUTH'
+    ELSE 'WEST'
+  END AS region,
+  regexp_extract(entities.pharmacy_address, ', ([A-Z]{2}) [0-9]{5}$', 1) AS state_code,
+  entities.pharmacy_address,
+  entities.phone AS pharmacy_phone,
+  entities.fax AS pharmacy_fax,
   claims.product_code,
   claims.review_period,
   claims.claim_count,

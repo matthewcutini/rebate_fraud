@@ -1,0 +1,16 @@
+resources:
+  jobs:
+    governance_access_allowed:
+      name: ${bundle.target}-rebate-fraud-access-allowed
+      run_as:
+        service_principal_name: ${var.governance_test_principal}
+      performance_target: STANDARD
+      tags:
+        aidevkit_project: rebate_fraud
+      tasks:
+        - task_key: query_governed_table
+          sql_task:
+            file:
+              path: ../src/governance/access_allowed.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}

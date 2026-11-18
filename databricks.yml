@@ -14,6 +14,12 @@ variables:
   landing_volume:
     description: Managed volume for raw source exports
     default: landing
+  warehouse_id:
+    description: Serverless SQL warehouse used by governance jobs
+    default: 5d942ad88a289cf7
+  governance_test_principal:
+    description: Application ID of the non-admin governance test principal
+    default: 961bac9c-adf7-4dab-8197-748a848983ad
 
 workspace:
   host: https://8259554820748444.4.gcp.databricks.com
