@@ -7,3 +7,5 @@ local_notes/
 *.local.md
 credentials/
 credentials.*
+__pycache__/
+*.py[cod]

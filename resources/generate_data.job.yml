@@ -1,0 +1,15 @@
+resources:
+  jobs:
+    generate_synthetic_data:
+      name: ${bundle.target}-rebate-fraud-generate-data
+      performance_target: STANDARD
+      tags:
+        aidevkit_project: rebate-fraud
+      tasks:
+        - task_key: generate_raw_files
+          notebook_task:
+            notebook_path: ../src/data/generate.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              volume: ${var.landing_volume}
