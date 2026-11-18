@@ -1,0 +1,22 @@
+resources:
+  pipelines:
+    rebate_fraud_pipeline:
+      name: rebate-fraud-pipeline
+      catalog: ${var.catalog}
+      target: ${var.schema}
+      serverless: true
+      continuous: false
+      development: true
+      photon: true
+      channel: current
+      configuration:
+        landing_path: /Volumes/${var.catalog}/${var.schema}/${var.landing_volume}/ready
+      libraries:
+        - file:
+            path: ../src/pipeline/bronze.sql
+        - file:
+            path: ../src/pipeline/silver.sql
+        - file:
+            path: ../src/pipeline/reconciliation.sql
+        - file:
+            path: ../src/pipeline/gold.sql
