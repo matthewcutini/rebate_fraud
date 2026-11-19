@@ -80,3 +80,11 @@
 - **Changed:** Replaced the invalid job-to-app HTTP call with deployed app status, deployment, Postgres resource, and Lakebase count checks; retained the signed-in-user route evidence separately; polled the timed-out run directly from the Jobs API.
 - **Why:** The verifier must respect the app's user-authorization boundary rather than weakening it, while still proving the deployed app points to the same operational records.
 - **Verified:** Deployed job `453506024885536` has explicit dependencies, queueing, `max_concurrent_runs: 1`, and serverless `STANDARD`; runs `180075375586623` and `806236758003209` both succeeded; the rerun kept 20 unique operational cases; gold/Lakebase/app counts and exposure matched; governed gold and Genie matched at 21,845 cases and $9,823,195.85.
+
+## 2026-11-19 — Live Evidence Generator
+
+- **Tried:** Built one SDK-based generator for pipeline, SQL, Jobs, Genie, Lakebase, and app proof with per-file regeneration, Markdown tables, final-run anchoring, and identity/secret redaction.
+- **Failed:** The first data-quality query used obsolete reconciliation column names; the first AI query used `ai_prompt_version` instead of `prompt_version`; the first two live Genie comparisons treated harmless display-label differences as mismatches; one SDK-version diagnostic referenced an unavailable module attribute.
+- **Changed:** Aligned queries to the deployed schemas, normalized harmless Genie labels without weakening numeric comparison, omitted free-form Genie prose that repeated synthetic entity names, and retained structured SQL/results as the answer proof.
+- **Why:** Evaluators need live, readable, reproducible text evidence without secrets, identities, raw encoded notebook exports, or hand-entered result values.
+- **Verified:** `tools/generate_evidence.py` compiled and regenerated all stage files from `--profile vandelay`; the final Genie run matched 15 of 15 benchmarks; privacy scans found no emails, tokens, or synthetic entity names; `git diff --check` passed.

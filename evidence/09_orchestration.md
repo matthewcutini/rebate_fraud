@@ -1,69 +1,124 @@
-# Lakeflow Job Orchestration Evidence
+Generated 2026-11-19T20:32:57Z by tools/generate_evidence.py from the live workspace
 
-## Deployed Job
+# Orchestrated Lakeflow Job
 
-- Profile/workspace: `vandelay` / `https://8259554820748444.4.gcp.databricks.com`
-- Job: `453506024885536` (`[dev matt_cutini] dev-rebate-fraud-orchestration`)
-- Trigger: manual (`ONE_TIME`); selected because the demo data set is fixed and evidence must not drift after capture.
-- Concurrency: `max_concurrent_runs: 1`; queue enabled.
-- Compute: serverless `STANDARD`.
-- Dependency chain: `refresh_pipeline` -> `refresh_governed_consumption` -> `score_cases` -> `explain_top_cases` -> `evaluate_ai` -> `sync_operational` -> `verify_connected_outputs`.
+This file proves the final successful connected run, serialized task states and durations, queue settings, and every task exit value or available log from the Jobs API.
 
-## Successful Run 1
+## Final Successful Run
 
-- Run ID: `180075375586623`
-- State: `TERMINATED / SUCCESS`
-- Total duration: 871 seconds
+| Job ID | Run ID | Trigger | Result | Duration seconds | Max concurrent runs | Queue enabled |
+| --- | --- | --- | --- | ---: | ---: | --- |
+| `453506024885536` | `806236758003209` | `ONE_TIME` | `SUCCESS` | `1248.2` | `1` | `True` |
 
-| Task | State | Execution | Exit value |
-|---|---|---:|---|
-| `refresh_pipeline` | SUCCESS | 293 s | N/A (pipeline task) |
-| `refresh_governed_consumption` | SUCCESS | 44 s | N/A (nested job) |
-| `score_cases` | SUCCESS | 7 s | `{}` |
-| `explain_top_cases` | SUCCESS | 17 s | `{}` |
-| `evaluate_ai` | SUCCESS | 262 s | 20 rows evaluated; baseline and candidate top-20 precision both 0.65; improvement claim disallowed |
-| `sync_operational` | SUCCESS | 17 s | 20 source rows; 20 case rows; 0 inserts; 62 history rows |
-| `verify_connected_outputs` | SUCCESS | 37 s | Cross-layer values matched |
+## Task States
 
-## Successful Run 2
+| task | task_run_id | result | duration_seconds |
+| --- | --- | --- | --- |
+| sync_operational | 561038139248061 | SUCCESS | 20.3 |
+| refresh_governed_consumption | 473794132839922 | SUCCESS | 54.1 |
+| evaluate_ai | 119335936168131 | SUCCESS | 525.9 |
+| verify_connected_outputs | 1027581777514410 | SUCCESS | 42.2 |
+| score_cases | 978626615224898 | SUCCESS | 8.4 |
+| refresh_pipeline | 374240154551089 | SUCCESS | 576.5 |
+| explain_top_cases | 947391055438722 | SUCCESS | 18.9 |
 
-- Run ID: `806236758003209`
-- State: `TERMINATED / SUCCESS`
-- Total duration: 1,248 seconds
+## Task Exit Values and Logs
 
-| Task | State | Execution | Exit value |
-|---|---|---:|---|
-| `refresh_pipeline` | SUCCESS | 576 s | N/A (pipeline task) |
-| `refresh_governed_consumption` | SUCCESS | 53 s | N/A (nested job) |
-| `score_cases` | SUCCESS | 8 s | `{}` |
-| `explain_top_cases` | SUCCESS | 18 s | `{}` |
-| `evaluate_ai` | SUCCESS | 340 s | 20 rows evaluated; baseline and candidate top-20 precision both 0.65; improvement claim disallowed; MLflow run `f57bfc1793f949c49e33910881103dde` |
-| `sync_operational` | SUCCESS | 18 s | 20 source rows; 20 case rows; 0 inserts; 82 history rows |
-| `verify_connected_outputs` | SUCCESS | 40 s | Cross-layer values matched |
+### `sync_operational`
 
-## Rerun Safety
+```json
+{
+  "notebook_result": {
+    "case_rows": 20,
+    "endpoint": "projects/rebate-fraud-ops/branches/production/endpoints/primary",
+    "history_rows": 82,
+    "inserted_rows": 0,
+    "source_rows": 20
+  }
+}
+```
 
-- The operational table remained at 20 cases on both runs and `inserted_rows` remained 0, so the rerun created no duplicate cases.
-- History increased from 62 to 82 because the refreshed machine-owned case values produced one trigger-generated change event for each of the 20 cases; human-owned columns remain outside the conflict update.
-- The job queue and single-run concurrency setting prevent overlapping refreshes.
+### `refresh_governed_consumption`
 
-## Cross-System Check
+```json
+{
+  "result": "No task exit value returned by the Jobs API."
+}
+```
 
-The final verifier returned:
+### `evaluate_ai`
 
-| Surface | Case count | Estimated exposure |
-|---|---:|---:|
-| Gold priority cases | 20 | $893,017.75 |
-| Lakebase operational cases | 20 | $893,017.75 |
-| Deployed app Postgres resource | 20 | $893,017.75 |
-| Governed gold consumed by Genie | 21,845 | $9,823,195.85 |
-| Genie answer | 21,845 | $9,823,195.85 |
+```json
+{
+  "notebook_result": {
+    "baseline_top20_precision": 0.65,
+    "candidate_top20_precision": 0.65,
+    "evaluated_rows": 20,
+    "improvement_claim_allowed": false,
+    "judge_metrics": {
+      "actionable_next_step/mean": 1.0,
+      "grounded_in_supplied_facts/mean": 0.4,
+      "neutral_investigative_language/mean": 1.0,
+      "no_invented_data/mean": 0.35
+    },
+    "mlflow_run_id": "f57bfc1793f949c49e33910881103dde",
+    "prompt_version": "prompt-v2"
+  }
+}
+```
 
-- App deployed state: `RUNNING`; active deployment: `SUCCEEDED`; resource database: `projects/rebate-fraud-ops/branches/production/databases/databricks-postgres`.
-- Genie generated SQL against only `vandelay.rebate_fraud.governed_case_features` and returned the same case count and exposure as the governed table.
-- The app count is verified through its deployed Postgres resource and the same Lakebase query used by its case API. Direct job-to-app HTTP invocation is intentionally not used because the app requires a signed-in user's forwarded access token.
+### `verify_connected_outputs`
 
-## Corrected Failed Run
+```json
+{
+  "notebook_result": {
+    "app": {
+      "case_count": 20,
+      "database": "projects/rebate-fraud-ops/branches/production/databases/databricks-postgres",
+      "deployment_status": "SUCCEEDED",
+      "status": "RUNNING"
+    },
+    "genie": {
+      "case_count": 21845,
+      "exposure": "9823195.85"
+    },
+    "genie_sql": "SELECT COUNT(DISTINCT `case_id`) AS `suspected_case_count`, ROUND(SUM(`estimated_overpayment`), 2) AS `total_estimated_exposure` FROM `vandelay`.`rebate_fraud`.`governed_case_features`",
+    "gold_priority": {
+      "case_count": 20,
+      "exposure": "893017.75"
+    },
+    "governed_gold": {
+      "case_count": 21845,
+      "exposure": "9823195.85"
+    },
+    "lakebase": {
+      "case_count": 20,
+      "exposure": "893017.75"
+    }
+  }
+}
+```
 
-- Run `1016946532119613` completed all data, AI, and Lakebase tasks but failed `verify_connected_outputs` with HTTP 401 when the job workload token called the user-authorized app endpoint.
-- Resolution: verify the deployed app status, deployment status, configured Postgres database, and Lakebase-backed count through platform APIs; retain interactive route checks with signed-in-user authorization in `evidence/10_app.md`.
+### `score_cases`
+
+```json
+{
+  "sql_output": {}
+}
+```
+
+### `refresh_pipeline`
+
+```json
+{
+  "result": "No task exit value returned by the Jobs API."
+}
+```
+
+### `explain_top_cases`
+
+```json
+{
+  "sql_output": {}
+}
+```

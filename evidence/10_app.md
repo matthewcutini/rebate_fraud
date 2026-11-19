@@ -1,37 +1,39 @@
-# Databricks App Evidence
+Generated 2026-11-19T20:33:30Z by tools/generate_evidence.py from the live workspace
 
-- **App:** `rebate-ops-matt-cutini`
-- **URL:** https://rebate-ops-matt-cutini-8259554820748444.gcp.databricksapps.com
-- **Execution identity:** Analytics and Genie use the signed-in user's forwarded token; Lakebase uses the app service principal with app-level row authorization.
+# Databricks App Route Checks
+
+This file proves the live app deployment, user-authorized route availability, persona-specific presentation, and deployed SQL warehouse, Genie, and Postgres resources.
+
+## Deployed App
+
+| App | Status | Compute | Deployment |
+| --- | --- | --- | --- |
+| `rebate-ops-matt-cutini` | `RUNNING` | `ACTIVE` | `SUCCEEDED` |
 
 ## Route Checks
 
-| Route | HTTP status |
-| --- | ---: |
-| `/` | 200 |
-| `/cases` | 200 |
-| `/cases/31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64` | 200 |
-| `/genie` | 200 |
-| `/api/health` | 200 |
-| `/api/whoami` | 200 |
+| route | http_status |
+| --- | --- |
+| / | 200 |
+| /cases | 200 |
+| /cases/[CASE_ID] | 200 |
+| /genie | 200 |
+| /api/health | 200 |
+| /api/whoami | 200 |
 
-## Persona Comparison
+## Persona Checks
 
-- **Director lens:** Investigation flow and complete paper trail; shows case status, ownership, due dates, history.
-- **SVP lens:** Financial exposure and control outcome; shows estimated exposure, priority cases, executive questions.
-- Persona lenses change presentation only and never expand the signed-in user's governed data access.
+| persona | http_status | headline | emphasis |
+| --- | --- | --- | --- |
+| director | 200 | Investigation flow and complete paper trail | case status, ownership, due dates, history |
+| svp | 200 | Financial exposure and control outcome | estimated exposure, priority cases, executive questions |
 
-## Lakebase Edit and History
+## Deployed Resources
 
-- **Case:** `31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64`
-- **Before status:** `IN_REVIEW`
-- **After status:** `IN_REVIEW`
-- **Saved note:** App acceptance check 2026-11-19T02:16:17.278899+00:00
-- **Latest history event:** `UPDATE` from `APP` by `matt.cutini@databricks.com` at `2026-11-19T02:16:17.671Z`.
-- **Changed columns:** notes, updated_at.
+| resource | kind | target |
+| --- | --- | --- |
+| sql-warehouse | sql_warehouse | 5d942ad88a289cf7 |
+| genie-space | genie_space | 01f1e3b93f4b11e79b2fbfcd74547821 |
+| postgres | postgres | projects/rebate-fraud-ops/branches/production/databases/databricks-postgres |
 
-## Screen Sources
-
-- Overview and priority queue: user-authorized SQL warehouse queries over governed gold tables.
-- Case workspace: governed gold evidence plus mutable Lakebase workflow and history.
-- Ask Genie: governed Genie space with answer, table, and generated SQL shown in the AppKit chat surface.
+The route checks use the current Databricks OAuth token only in the request header. No token, response identity, email, or customer/entity name is written to evidence.

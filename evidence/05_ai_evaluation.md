@@ -1,36 +1,70 @@
-# AI Evaluation Evidence
+Generated 2026-11-19T20:31:50Z by tools/generate_evidence.py from the live workspace
 
-**Run date:** 2026-11-18  
-**Protocol:** `EVAL_PROTOCOL.md`, unchanged  
-**Held-out period:** `2026-10`  
-**Generator:** `databricks-claude-haiku-4-5`  
-**Different-family judge:** `databricks-gpt-5-6-luna`  
-**Rows evaluated per prompt:** 20
+# AI Evaluation and Iteration
 
-## Ranking Result
+This file proves the locked top-20 ranking comparison, prompt iteration history, judge pass rates, and final evaluation task exit value from live persisted evaluations.
 
-| Method | Top-20 precision | Required improvement | Claim allowed |
-|---|---:|---:|---|
-| Exact-match baseline | 65% | — | — |
-| Explainable candidate score | 65% | +10 percentage points | No |
+## Iteration History
 
-The candidate tied the baseline. Per the locked protocol, this build makes no ranking-improvement claim.
+Statement `01f1e458-4091-15f5-a9a2-8aac1f2fdb25`:
 
-## GenAI Judge Results
+| prompt_version | mlflow_run_id | evaluated_rows | candidate_precision_pct | baseline_precision_pct | improvement_claim_allowed | evaluated_at |
+| --- | --- | --- | --- | --- | --- | --- |
+| prompt-v1 | b49e33da3b45442a9827e5f4750c7f93 | 20 | 0.0 | 0.0 | false | 2026-11-19T00:08:13.271Z |
+| prompt-v1 | fe80568d98a94035a139282f13562968 | 20 | 65.0 | 65.0 | false | 2026-11-19T00:22:18.737Z |
+| prompt-v2 | c683dcf24bf549cdb372d84a54c0d831 | 20 | 65.0 | 65.0 | false | 2026-11-19T00:30:11.650Z |
+| prompt-v2 | 38a5d1115673471aba4505498678ceb8 | 20 | 65.0 | 65.0 | false | 2026-11-19T19:00:33.868Z |
+| prompt-v2 | ab0f7182d98b4e71ab12190c252f8364 | 20 | 65.0 | 65.0 | false | 2026-11-19T19:18:17.204Z |
+| prompt-v2 | f57bfc1793f949c49e33910881103dde | 20 | 65.0 | 65.0 | false | 2026-11-19T19:44:13.760Z |
 
-| Judge | Prompt v1 | Prompt v2 | Change |
-|---|---:|---:|---:|
-| Grounded in supplied facts | 35% | 35% | 0 points |
-| Actionable next step | 95% | 100% | +5 points |
-| No invented data | 45% | 25% | -20 points |
-| Neutral investigative language | 100% | 100% | 0 points |
+## Judge Pass Rates
 
-- Prompt v1 MLflow run: `fe80568d98a94035a139282f13562968`
-- Prompt v2 MLflow run: `c683dcf24bf549cdb372d84a54c0d831`
-- Per-row assessments and rationales: `vandelay.rebate_fraud.gold_ai_evaluations`
+| prompt_version | mlflow_run_id | judge | pass_rate_pct | assessments |
+| --- | --- | --- | --- | --- |
+| prompt-v1 | b49e33da3b45442a9827e5f4750c7f93 | actionable_next_step | 90.0 | 20 |
+| prompt-v1 | b49e33da3b45442a9827e5f4750c7f93 | grounded_in_supplied_facts | 30.0 | 20 |
+| prompt-v1 | b49e33da3b45442a9827e5f4750c7f93 | neutral_investigative_language | 100.0 | 20 |
+| prompt-v1 | b49e33da3b45442a9827e5f4750c7f93 | no_invented_data | 30.0 | 20 |
+| prompt-v1 | fe80568d98a94035a139282f13562968 | actionable_next_step | 95.0 | 20 |
+| prompt-v1 | fe80568d98a94035a139282f13562968 | grounded_in_supplied_facts | 35.0 | 20 |
+| prompt-v1 | fe80568d98a94035a139282f13562968 | neutral_investigative_language | 100.0 | 20 |
+| prompt-v1 | fe80568d98a94035a139282f13562968 | no_invented_data | 45.0 | 20 |
+| prompt-v2 | 38a5d1115673471aba4505498678ceb8 | actionable_next_step | 100.0 | 20 |
+| prompt-v2 | 38a5d1115673471aba4505498678ceb8 | grounded_in_supplied_facts | 45.0 | 20 |
+| prompt-v2 | 38a5d1115673471aba4505498678ceb8 | neutral_investigative_language | 100.0 | 20 |
+| prompt-v2 | 38a5d1115673471aba4505498678ceb8 | no_invented_data | 35.0 | 20 |
+| prompt-v2 | ab0f7182d98b4e71ab12190c252f8364 | actionable_next_step | 100.0 | 20 |
+| prompt-v2 | ab0f7182d98b4e71ab12190c252f8364 | grounded_in_supplied_facts | 40.0 | 20 |
+| prompt-v2 | ab0f7182d98b4e71ab12190c252f8364 | neutral_investigative_language | 100.0 | 20 |
+| prompt-v2 | ab0f7182d98b4e71ab12190c252f8364 | no_invented_data | 25.0 | 20 |
+| prompt-v2 | c683dcf24bf549cdb372d84a54c0d831 | actionable_next_step | 100.0 | 20 |
+| prompt-v2 | c683dcf24bf549cdb372d84a54c0d831 | grounded_in_supplied_facts | 35.0 | 20 |
+| prompt-v2 | c683dcf24bf549cdb372d84a54c0d831 | neutral_investigative_language | 100.0 | 20 |
+| prompt-v2 | c683dcf24bf549cdb372d84a54c0d831 | no_invented_data | 25.0 | 20 |
+| prompt-v2 | f57bfc1793f949c49e33910881103dde | actionable_next_step | 100.0 | 20 |
+| prompt-v2 | f57bfc1793f949c49e33910881103dde | grounded_in_supplied_facts | 40.0 | 20 |
+| prompt-v2 | f57bfc1793f949c49e33910881103dde | neutral_investigative_language | 100.0 | 20 |
+| prompt-v2 | f57bfc1793f949c49e33910881103dde | no_invented_data | 35.0 | 20 |
 
-## Failure Review and Iteration
+## Final Orchestration Exit Value
 
-The v1 judge repeatedly identified “supported by documentation,” named documents, patient references, and “coordinated activity” as facts not present in the supplied record. Prompt v2 explicitly prohibited those additions and limited the next step to quantity reconciliation and asking the entity to explain the variance.
+Task run `119335936168131` from job run `806236758003209`:
 
-The model still produced “supported by documentation” and requests for documentation. Groundedness did not improve, and the no-invented-data score regressed. Judges were not weakened or changed. Because unsupported assertions exceeded 5%, the build makes no GenAI-quality claim and flags all generated drafts for investigator review.
+```json
+{
+  "notebook_result": {
+    "baseline_top20_precision": 0.65,
+    "candidate_top20_precision": 0.65,
+    "evaluated_rows": 20,
+    "improvement_claim_allowed": false,
+    "judge_metrics": {
+      "actionable_next_step/mean": 1.0,
+      "grounded_in_supplied_facts/mean": 0.4,
+      "neutral_investigative_language/mean": 1.0,
+      "no_invented_data/mean": 0.35
+    },
+    "mlflow_run_id": "f57bfc1793f949c49e33910881103dde",
+    "prompt_version": "prompt-v2"
+  }
+}
+```
