@@ -1,0 +1,633 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "0c51d9c3138eb2a1b8b931d1a1b8e459",
+        "question": [
+          "Which ten pharmacies have the highest estimated overpayment exposure?"
+        ]
+      },
+      {
+        "id": "5328d319c5e2825c398b42adb2a7a7ef",
+        "question": [
+          "For each product, compare total claimed units, manufacturer units, wholesaler units, supported units, and excess units."
+        ]
+      },
+      {
+        "id": "5cffd655c2d89821c6eace96ecd3e6d7",
+        "question": [
+          "For case 31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64, show its quantities, channel evidence, identity evidence, entity status, and estimated exposure."
+        ]
+      },
+      {
+        "id": "60dd8f70c69272421cfb8279579c9cc8",
+        "question": [
+          "What is the total estimated overpayment exposure by review month?"
+        ]
+      },
+      {
+        "id": "c3002f7f39a088bd8aa36ad789da9826",
+        "question": [
+          "How much exposure involves cross-channel activity versus single-channel activity?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "vandelay.rebate_fraud.governed_case_features",
+        "column_configs": [
+          {
+            "column_name": "case_id",
+            "description": [
+              "Stable identifier for one pharmacy, product, and calendar review-month case record."
+            ],
+            "synonyms": [
+              "case number",
+              "case identifier"
+            ]
+          },
+          {
+            "column_name": "channel_count",
+            "description": [
+              "Number of claim channels represented in the case record."
+            ]
+          },
+          {
+            "column_name": "claim_count",
+            "description": [
+              "Total conformed claim lines contributing to the case record."
+            ]
+          },
+          {
+            "column_name": "claimed_rebate_amount",
+            "description": [
+              "Total rebate amount requested for the case record, in US dollars."
+            ],
+            "synonyms": [
+              "requested rebate dollars"
+            ]
+          },
+          {
+            "column_name": "claimed_units",
+            "description": [
+              "Product units claimed for rebate in the calendar review month."
+            ],
+            "synonyms": [
+              "rebate units",
+              "requested units"
+            ]
+          },
+          {
+            "column_name": "entity_status",
+            "description": [
+              "Latest known synthetic pharmacy operating status, such as ACTIVE or CLOSED."
+            ],
+            "synonyms": [
+              "pharmacy status"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "estimated_overpayment",
+            "description": [
+              "Illustrative suspected overpayment exposure in US dollars; this is not verified fraud or a recovered amount."
+            ],
+            "synonyms": [
+              "exposure",
+              "suspected exposure",
+              "estimated exposure"
+            ]
+          },
+          {
+            "column_name": "excess_units",
+            "description": [
+              "Claimed units above supported units, floored at zero."
+            ],
+            "synonyms": [
+              "unsupported units",
+              "overclaimed units"
+            ]
+          },
+          {
+            "column_name": "has_cross_channel_activity",
+            "description": [
+              "True only when governed matching found the same underlying activity across medical and pharmacy channels."
+            ],
+            "synonyms": [
+              "cross-channel",
+              "duplicate channel activity"
+            ]
+          },
+          {
+            "column_name": "has_multiple_source_identities",
+            "description": [
+              "True when more than one source identity was resolved to the canonical pharmacy."
+            ],
+            "synonyms": [
+              "aliases",
+              "multiple identities"
+            ]
+          },
+          {
+            "column_name": "manufacturer_units",
+            "description": [
+              "Product units documented through manufacturer-direct movements."
+            ]
+          },
+          {
+            "column_name": "matched_cross_channel_pairs",
+            "description": [
+              "Count of governed medical/pharmacy claim pairs matched as the same underlying activity."
+            ]
+          },
+          {
+            "column_name": "medical_claim_count",
+            "description": [
+              "Count of conformed medical-channel claim lines."
+            ]
+          },
+          {
+            "column_name": "pharmacy_address",
+            "description": [
+              "Sensitive synthetic pharmacy address governed by a Unity Catalog mask."
+            ],
+            "exclude": true
+          },
+          {
+            "column_name": "pharmacy_claim_count",
+            "description": [
+              "Count of conformed pharmacy-channel claim lines."
+            ]
+          },
+          {
+            "column_name": "pharmacy_fax",
+            "description": [
+              "Sensitive synthetic pharmacy fax governed by a Unity Catalog mask."
+            ],
+            "exclude": true
+          },
+          {
+            "column_name": "pharmacy_id",
+            "description": [
+              "Synthetic canonical pharmacy identifier used to aggregate aliases."
+            ],
+            "synonyms": [
+              "canonical pharmacy ID"
+            ]
+          },
+          {
+            "column_name": "pharmacy_name",
+            "description": [
+              "Synthetic canonical pharmacy name shown to business users."
+            ],
+            "synonyms": [
+              "pharmacy",
+              "entity name"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "pharmacy_phone",
+            "description": [
+              "Sensitive synthetic pharmacy phone governed by a Unity Catalog mask."
+            ],
+            "exclude": true
+          },
+          {
+            "column_name": "product_code",
+            "description": [
+              "Synthetic product code associated with the case record."
+            ],
+            "synonyms": [
+              "product",
+              "NDC"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "region",
+            "description": [
+              "US business region used by the Unity Catalog row-access policy."
+            ],
+            "synonyms": [
+              "business region"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "review_period",
+            "description": [
+              "Calendar review month formatted YYYY-MM."
+            ],
+            "synonyms": [
+              "month",
+              "review month"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "source_identity_count",
+            "description": [
+              "Number of source identities resolved to the canonical pharmacy."
+            ]
+          },
+          {
+            "column_name": "state_code",
+            "description": [
+              "Two-letter synthetic US state code for the pharmacy."
+            ],
+            "synonyms": [
+              "state"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "supported_units",
+            "description": [
+              "Documented product units supporting rebate eligibility; manufacturer and wholesaler movements combined."
+            ],
+            "synonyms": [
+              "purchased units",
+              "documented units"
+            ]
+          },
+          {
+            "column_name": "wholesaler_units",
+            "description": [
+              "Product units documented through wholesaler movements."
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "instructions": {
+    "text_instructions": [
+      {
+        "id": "665043fba89d3d3df892c5ea7b6e39d1",
+        "content": [
+          "## PURPOSE\n",
+          "- Answer governed rebate-fraud exposure and reconciliation questions for the Director of Rebate Operations and SVP of Contracting and Rebates.\n",
+          "\n",
+          "## DISAMBIGUATION\n",
+          "- Treat month and review month as calendar review_period values; never invent missing months.\n",
+          "- Treat case as one case_id at the pharmacy, product, and review-month grain.\n",
+          "\n",
+          "## DATA QUALITY NOTES\n",
+          "- Return only review periods present in governed_case_features and state the date range when summarizing trends.\n",
+          "\n",
+          "## CONSTRAINTS\n",
+          "- Do not describe suspected exposure as verified fraud, recovered dollars, payment denial, or legal outcome.\n",
+          "- Do not answer questions about investigator status, ownership, communications, recoveries, or escalation because those fields are not in this source.\n",
+          "- Do not expose pharmacy_address, pharmacy_phone, or pharmacy_fax.\n",
+          "\n",
+          "## Instructions you must follow when providing summaries\n",
+          "- Present monetary exposure in US dollars rounded to two decimals and unit quantities as units.\n",
+          "- Rank highest or top results by descending estimated_overpayment unless the user names another measure; break ties with stable identifiers."
+        ]
+      }
+    ],
+    "example_question_sqls": [
+      {
+        "id": "2aa70ddd72bb520bfb60ef528211e0b7",
+        "question": [
+          "Show the monthly evidence for Aster 0241 Family Pharmacy."
+        ],
+        "sql": [
+          "SELECT governed_case_features.review_period, governed_case_features.product_code, governed_case_features.claimed_units, governed_case_features.manufacturer_units, governed_case_features.wholesaler_units, governed_case_features.supported_units, governed_case_features.excess_units, governed_case_features.has_cross_channel_activity, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.pharmacy_name = 'Aster 0241 Family Pharmacy' ORDER BY governed_case_features.review_period, governed_case_features.product_code"
+        ]
+      },
+      {
+        "id": "896709809dcc0360d87272f5926e1bfd",
+        "question": [
+          "Which products had the most estimated exposure in the West region?"
+        ],
+        "sql": [
+          "SELECT governed_case_features.product_code, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.region = 'WEST' GROUP BY governed_case_features.product_code ORDER BY total_estimated_exposure DESC, governed_case_features.product_code"
+        ]
+      },
+      {
+        "id": "8cc9af0653abed67d2dbf7e705351d3b",
+        "question": [
+          "What was estimated exposure by state for October 2026?"
+        ],
+        "sql": [
+          "SELECT governed_case_features.state_code, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.review_period = '2026-10' GROUP BY governed_case_features.state_code ORDER BY total_estimated_exposure DESC, governed_case_features.state_code"
+        ]
+      },
+      {
+        "id": "d96e53ec861d53848cc6854851153deb",
+        "question": [
+          "Assess whether key reconciliation fields are complete."
+        ],
+        "sql": [
+          "SELECT count_if(governed_case_features.claimed_units IS NULL) AS missing_claimed_units, count_if(governed_case_features.supported_units IS NULL) AS missing_supported_units, count_if(governed_case_features.excess_units IS NULL) AS missing_excess_units, count_if(governed_case_features.estimated_overpayment IS NULL) AS missing_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features"
+        ]
+      },
+      {
+        "id": "f9e108675433ef1ac9faed2354cb7db4",
+        "question": [
+          "What percent of claimed units were excess units by month?"
+        ],
+        "sql": [
+          "SELECT governed_case_features.review_period, round(100.0 * sum(governed_case_features.excess_units) / nullif(sum(governed_case_features.claimed_units), 0), 2) AS excess_unit_percent FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+        ]
+      }
+    ],
+    "sql_snippets": {
+      "filters": [
+        {
+          "id": "cf09705e76bd681c13c8ebdc8a5003d3",
+          "sql": [
+            "governed_case_features.has_cross_channel_activity = true"
+          ],
+          "display_name": "Cross-channel Cases",
+          "synonyms": [
+            "cross-channel"
+          ]
+        },
+        {
+          "id": "cfd53983647b4634ef1125d8a285456e",
+          "sql": [
+            "governed_case_features.has_multiple_source_identities = true"
+          ],
+          "display_name": "Multiple Identity Cases",
+          "synonyms": [
+            "aliases",
+            "multiple identities"
+          ]
+        },
+        {
+          "id": "deb540d05f64dbadfa1720100e96cd68",
+          "sql": [
+            "governed_case_features.claimed_units > governed_case_features.supported_units"
+          ],
+          "display_name": "Excess Claim Cases",
+          "synonyms": [
+            "overclaimed",
+            "unsupported claims"
+          ]
+        }
+      ],
+      "measures": [
+        {
+          "id": "0bc7978b7c1f4308be7d57beb0ff1a71",
+          "alias": "total_estimated_exposure",
+          "sql": [
+            "SUM(governed_case_features.estimated_overpayment)"
+          ],
+          "display_name": "Total Estimated Exposure",
+          "synonyms": [
+            "exposure",
+            "suspected exposure"
+          ]
+        },
+        {
+          "id": "df72bd0f3e30ab8ba4a9b4a1e35ae6a7",
+          "alias": "suspected_case_count",
+          "sql": [
+            "COUNT(DISTINCT governed_case_features.case_id)"
+          ],
+          "display_name": "Suspected Case Count",
+          "synonyms": [
+            "case count"
+          ]
+        },
+        {
+          "id": "ee7430e809ce270d682d7cb03f1b49e1",
+          "alias": "total_excess_units",
+          "sql": [
+            "SUM(governed_case_features.excess_units)"
+          ],
+          "display_name": "Total Excess Units",
+          "synonyms": [
+            "unsupported units"
+          ]
+        }
+      ]
+    }
+  },
+  "benchmarks": {
+    "questions": [
+      {
+        "id": "f4a47a4cc583482d6e881f97404be641",
+        "question": [
+          "What is the total estimated overpayment exposure by review month?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.review_period, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "da28db77fcd927208fd6be8f9ef7b8a3",
+        "question": [
+          "Which cases combine excess claimed units, cross-channel activity, and multiple source identities?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.excess_units, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.claimed_units > governed_case_features.supported_units AND governed_case_features.has_cross_channel_activity = true AND governed_case_features.has_multiple_source_identities = true ORDER BY governed_case_features.estimated_overpayment DESC, governed_case_features.case_id"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d8f71b382ddce7f43bafe3243e01311d",
+        "question": [
+          "Compare estimated exposure across regions and show each region's share of total exposure."
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.region, round(sum(governed_case_features.estimated_overpayment), 2) AS estimated_exposure, round(100.0 * sum(governed_case_features.estimated_overpayment) / sum(sum(governed_case_features.estimated_overpayment)) OVER (), 2) AS exposure_share_percent FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.region ORDER BY estimated_exposure DESC, governed_case_features.region"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "c85c7e26b6af12c1bf4f993ecb7ff9b1",
+        "question": [
+          "How have claimed units, supported units, and excess units changed by month?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.review_period, round(sum(governed_case_features.claimed_units), 2) AS claimed_units, round(sum(governed_case_features.supported_units), 2) AS supported_units, round(sum(governed_case_features.excess_units), 2) AS excess_units FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "af77613ba99e4eacda340a59cf6e839e",
+        "question": [
+          "Compare suspected cases for active, pending, and closed pharmacy entities."
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.entity_status, count(DISTINCT governed_case_features.case_id) AS suspected_case_count FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.entity_status IN ('ACTIVE', 'PENDING', 'CLOSED') GROUP BY governed_case_features.entity_status ORDER BY suspected_case_count DESC, governed_case_features.entity_status"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "a5d6b79bf35fbfa5b6db6798499d15a4",
+        "question": [
+          "How many case records are missing pharmacy ID, pharmacy name, region, or state code?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT count(*) AS missing_case_record_count FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.pharmacy_id IS NULL OR trim(governed_case_features.pharmacy_id) = '' OR governed_case_features.pharmacy_name IS NULL OR trim(governed_case_features.pharmacy_name) = '' OR governed_case_features.region IS NULL OR trim(governed_case_features.region) = '' OR governed_case_features.state_code IS NULL OR trim(governed_case_features.state_code) = ''"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7f14664d9d1318fec0805598a2dbffb6",
+        "question": [
+          "How many case records are missing claimed units, supported units, excess units, or estimated exposure?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT sum(CASE WHEN governed_case_features.claimed_units IS NULL THEN 1 ELSE 0 END) AS missing_claimed_units, sum(CASE WHEN governed_case_features.supported_units IS NULL THEN 1 ELSE 0 END) AS missing_supported_units, sum(CASE WHEN governed_case_features.excess_units IS NULL THEN 1 ELSE 0 END) AS missing_excess_units, sum(CASE WHEN governed_case_features.estimated_overpayment IS NULL THEN 1 ELSE 0 END) AS missing_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "558d2ad670d940e22ce672f52451ab62",
+        "question": [
+          "How many suspected fraud cases exist, and what is their total estimated exposure?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT count(DISTINCT governed_case_features.case_id) AS suspected_case_count, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "506d13903e09228f43b70ff476e56af2",
+        "question": [
+          "How many cases involve multiple source identities, and how does their average estimated exposure compare with other cases?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT CASE WHEN governed_case_features.has_multiple_source_identities THEN 'Multiple source identities' ELSE 'Other cases' END AS case_group, count(DISTINCT governed_case_features.case_id) AS case_count, round(avg(governed_case_features.estimated_overpayment), 2) AS avg_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.has_multiple_source_identities ORDER BY avg_estimated_exposure DESC, case_group"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "43f173efb300f24616fc3bba0e2267d9",
+        "question": [
+          "For case 31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64, show its quantities, channel evidence, identity evidence, entity status, and estimated exposure."
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.entity_status, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.claimed_units, governed_case_features.supported_units, governed_case_features.excess_units, governed_case_features.manufacturer_units, governed_case_features.wholesaler_units, governed_case_features.has_cross_channel_activity, governed_case_features.matched_cross_channel_pairs, governed_case_features.has_multiple_source_identities, governed_case_features.source_identity_count, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.case_id = '31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64'"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3c9dd32478f3f915a5d486ee29100a4b",
+        "question": [
+          "For each product, compare total claimed units, manufacturer units, wholesaler units, supported units, and excess units."
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.product_code, round(sum(governed_case_features.claimed_units), 2) AS claimed_units, round(sum(governed_case_features.manufacturer_units), 2) AS manufacturer_units, round(sum(governed_case_features.wholesaler_units), 2) AS wholesaler_units, round(sum(governed_case_features.supported_units), 2) AS supported_units, round(sum(governed_case_features.excess_units), 2) AS excess_units FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.product_code ORDER BY governed_case_features.product_code"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2f49583372fa880f33acc059d67add16",
+        "question": [
+          "Show the ten case records with the highest estimated overpayment exposure, breaking ties by excess units."
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.excess_units, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features ORDER BY governed_case_features.estimated_overpayment DESC, governed_case_features.excess_units DESC, governed_case_features.case_id LIMIT 10"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2e781945519c00776dbc9558c32efce7",
+        "question": [
+          "Which ten pharmacies have the highest estimated overpayment exposure?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.pharmacy_id, governed_case_features.pharmacy_name, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.pharmacy_id, governed_case_features.pharmacy_name ORDER BY total_estimated_exposure DESC, governed_case_features.pharmacy_id LIMIT 10"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "16deee3bb17c9fa0486c5adb8b38b69c",
+        "question": [
+          "By month, how many pharmacy and product combinations have claimed units greater than supported units?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT governed_case_features.review_period, count(*) AS excess_claim_combinations FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.claimed_units > governed_case_features.supported_units GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "035d9d1b8b0658847e53e491d23c324d",
+        "question": [
+          "How much exposure involves cross-channel activity versus single-channel activity?"
+        ],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT CASE WHEN governed_case_features.has_cross_channel_activity THEN 'Cross-channel activity' ELSE 'Single-channel activity' END AS activity_type, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.has_cross_channel_activity ORDER BY total_estimated_exposure DESC, activity_type"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

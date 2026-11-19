@@ -1,0 +1,77 @@
+[
+  {
+    "id": "q01",
+    "question": "What is the total estimated overpayment exposure by review month?",
+    "sql": "SELECT governed_case_features.review_period, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+  },
+  {
+    "id": "q02",
+    "question": "How many suspected fraud cases exist, and what is their total estimated exposure?",
+    "sql": "SELECT count(DISTINCT governed_case_features.case_id) AS suspected_case_count, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features"
+  },
+  {
+    "id": "q03",
+    "question": "Which ten pharmacies have the highest estimated overpayment exposure?",
+    "sql": "SELECT governed_case_features.pharmacy_id, governed_case_features.pharmacy_name, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.pharmacy_id, governed_case_features.pharmacy_name ORDER BY total_estimated_exposure DESC, governed_case_features.pharmacy_id LIMIT 10"
+  },
+  {
+    "id": "q04",
+    "question": "How have claimed units, supported units, and excess units changed by month?",
+    "sql": "SELECT governed_case_features.review_period, round(sum(governed_case_features.claimed_units), 2) AS claimed_units, round(sum(governed_case_features.supported_units), 2) AS supported_units, round(sum(governed_case_features.excess_units), 2) AS excess_units FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+  },
+  {
+    "id": "q05",
+    "question": "Compare estimated exposure across regions and show each region's share of total exposure.",
+    "sql": "SELECT governed_case_features.region, round(sum(governed_case_features.estimated_overpayment), 2) AS estimated_exposure, round(100.0 * sum(governed_case_features.estimated_overpayment) / sum(sum(governed_case_features.estimated_overpayment)) OVER (), 2) AS exposure_share_percent FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.region ORDER BY estimated_exposure DESC, governed_case_features.region"
+  },
+  {
+    "id": "q06",
+    "question": "How much exposure involves cross-channel activity versus single-channel activity?",
+    "sql": "SELECT CASE WHEN governed_case_features.has_cross_channel_activity THEN 'Cross-channel activity' ELSE 'Single-channel activity' END AS activity_type, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.has_cross_channel_activity ORDER BY total_estimated_exposure DESC, activity_type"
+  },
+  {
+    "id": "q07",
+    "question": "Show the ten case records with the highest estimated overpayment exposure, breaking ties by excess units.",
+    "sql": "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.excess_units, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features ORDER BY governed_case_features.estimated_overpayment DESC, governed_case_features.excess_units DESC, governed_case_features.case_id LIMIT 10"
+  },
+  {
+    "id": "q08",
+    "question": "For case 31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64, show its quantities, channel evidence, identity evidence, entity status, and estimated exposure.",
+    "sql": "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.entity_status, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.claimed_units, governed_case_features.supported_units, governed_case_features.excess_units, governed_case_features.manufacturer_units, governed_case_features.wholesaler_units, governed_case_features.has_cross_channel_activity, governed_case_features.matched_cross_channel_pairs, governed_case_features.has_multiple_source_identities, governed_case_features.source_identity_count, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.case_id = '31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64'"
+  },
+  {
+    "id": "q09",
+    "question": "How many cases involve multiple source identities, and how does their average estimated exposure compare with other cases?",
+    "sql": "SELECT CASE WHEN governed_case_features.has_multiple_source_identities THEN 'Multiple source identities' ELSE 'Other cases' END AS case_group, count(DISTINCT governed_case_features.case_id) AS case_count, round(avg(governed_case_features.estimated_overpayment), 2) AS avg_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.has_multiple_source_identities ORDER BY avg_estimated_exposure DESC, case_group"
+  },
+  {
+    "id": "q10",
+    "question": "Compare suspected cases for active, pending, and closed pharmacy entities.",
+    "sql": "SELECT governed_case_features.entity_status, count(DISTINCT governed_case_features.case_id) AS suspected_case_count FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.entity_status IN ('ACTIVE', 'PENDING', 'CLOSED') GROUP BY governed_case_features.entity_status ORDER BY suspected_case_count DESC, governed_case_features.entity_status"
+  },
+  {
+    "id": "q11",
+    "question": "By month, how many pharmacy and product combinations have claimed units greater than supported units?",
+    "sql": "SELECT governed_case_features.review_period, count(*) AS excess_claim_combinations FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.claimed_units > governed_case_features.supported_units GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period"
+  },
+  {
+    "id": "q12",
+    "question": "Which cases combine excess claimed units, cross-channel activity, and multiple source identities?",
+    "sql": "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.excess_units, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.claimed_units > governed_case_features.supported_units AND governed_case_features.has_cross_channel_activity = true AND governed_case_features.has_multiple_source_identities = true ORDER BY governed_case_features.estimated_overpayment DESC, governed_case_features.case_id"
+  },
+  {
+    "id": "q13",
+    "question": "How many case records are missing pharmacy ID, pharmacy name, region, or state code?",
+    "sql": "SELECT count(*) AS missing_case_record_count FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.pharmacy_id IS NULL OR trim(governed_case_features.pharmacy_id) = '' OR governed_case_features.pharmacy_name IS NULL OR trim(governed_case_features.pharmacy_name) = '' OR governed_case_features.region IS NULL OR trim(governed_case_features.region) = '' OR governed_case_features.state_code IS NULL OR trim(governed_case_features.state_code) = ''"
+  },
+  {
+    "id": "q14",
+    "question": "How many case records are missing claimed units, supported units, excess units, or estimated exposure?",
+    "sql": "SELECT sum(CASE WHEN governed_case_features.claimed_units IS NULL THEN 1 ELSE 0 END) AS missing_claimed_units, sum(CASE WHEN governed_case_features.supported_units IS NULL THEN 1 ELSE 0 END) AS missing_supported_units, sum(CASE WHEN governed_case_features.excess_units IS NULL THEN 1 ELSE 0 END) AS missing_excess_units, sum(CASE WHEN governed_case_features.estimated_overpayment IS NULL THEN 1 ELSE 0 END) AS missing_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features"
+  },
+  {
+    "id": "q15",
+    "question": "For each product, compare total claimed units, manufacturer units, wholesaler units, supported units, and excess units.",
+    "sql": "SELECT governed_case_features.product_code, round(sum(governed_case_features.claimed_units), 2) AS claimed_units, round(sum(governed_case_features.manufacturer_units), 2) AS manufacturer_units, round(sum(governed_case_features.wholesaler_units), 2) AS wholesaler_units, round(sum(governed_case_features.supported_units), 2) AS supported_units, round(sum(governed_case_features.excess_units), 2) AS excess_units FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.product_code ORDER BY governed_case_features.product_code"
+  }
+]

@@ -1,0 +1,621 @@
+[
+  {
+    "id": "q01",
+    "question": "What is the total estimated overpayment exposure by review month?",
+    "sql": "SELECT governed_case_features.review_period, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period",
+    "statement_id": "01f1e3b9-d69d-1adc-ba0d-d867d7a120d1",
+    "columns": [
+      "review_period",
+      "total_estimated_exposure"
+    ],
+    "rows": [
+      {
+        "review_period": "2025-11",
+        "total_estimated_exposure": "893017.84"
+      },
+      {
+        "review_period": "2025-12",
+        "total_estimated_exposure": "893017.84"
+      },
+      {
+        "review_period": "2026-01",
+        "total_estimated_exposure": "893017.84"
+      },
+      {
+        "review_period": "2026-02",
+        "total_estimated_exposure": "893017.84"
+      },
+      {
+        "review_period": "2026-03",
+        "total_estimated_exposure": "893017.81"
+      },
+      {
+        "review_period": "2026-04",
+        "total_estimated_exposure": "893017.81"
+      },
+      {
+        "review_period": "2026-05",
+        "total_estimated_exposure": "893017.81"
+      },
+      {
+        "review_period": "2026-06",
+        "total_estimated_exposure": "893017.81"
+      },
+      {
+        "review_period": "2026-07",
+        "total_estimated_exposure": "893017.75"
+      },
+      {
+        "review_period": "2026-08",
+        "total_estimated_exposure": "893017.75"
+      },
+      {
+        "review_period": "2026-10",
+        "total_estimated_exposure": "893017.75"
+      }
+    ]
+  },
+  {
+    "id": "q02",
+    "question": "How many suspected fraud cases exist, and what is their total estimated exposure?",
+    "sql": "SELECT count(DISTINCT governed_case_features.case_id) AS suspected_case_count, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features",
+    "statement_id": "01f1e3b9-d736-1cd1-af9d-bc7673e3db16",
+    "columns": [
+      "suspected_case_count",
+      "total_estimated_exposure"
+    ],
+    "rows": [
+      {
+        "suspected_case_count": "21845",
+        "total_estimated_exposure": "9823195.85"
+      }
+    ]
+  },
+  {
+    "id": "q03",
+    "question": "Which ten pharmacies have the highest estimated overpayment exposure?",
+    "sql": "SELECT governed_case_features.pharmacy_id, governed_case_features.pharmacy_name, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.pharmacy_id, governed_case_features.pharmacy_name ORDER BY total_estimated_exposure DESC, governed_case_features.pharmacy_id LIMIT 10",
+    "statement_id": "01f1e3b9-d7c0-1b50-b73e-f677111effe9",
+    "columns": [
+      "pharmacy_id",
+      "pharmacy_name",
+      "total_estimated_exposure"
+    ],
+    "rows": [
+      {
+        "pharmacy_id": "REF-000488",
+        "pharmacy_name": "Pioneer 0488 Health Pharmacy",
+        "total_estimated_exposure": "207799.14"
+      },
+      {
+        "pharmacy_id": "REF-000396",
+        "pharmacy_name": "Willow 0396 Care Pharmacy",
+        "total_estimated_exposure": "207668.42"
+      },
+      {
+        "pharmacy_id": "REF-000080",
+        "pharmacy_name": "Elm 0080 Care Pharmacy",
+        "total_estimated_exposure": "207628.20"
+      },
+      {
+        "pharmacy_id": "REF-000235",
+        "pharmacy_name": "Timber 0235 Health Pharmacy",
+        "total_estimated_exposure": "202777.79"
+      },
+      {
+        "pharmacy_id": "REF-000281",
+        "pharmacy_name": "Quartz 0281 Community Pharmacy",
+        "total_estimated_exposure": "152777.79"
+      },
+      {
+        "pharmacy_id": "REF-000327",
+        "pharmacy_name": "Orchard 0327 Care Pharmacy",
+        "total_estimated_exposure": "152777.79"
+      },
+      {
+        "pharmacy_id": "REF-000373",
+        "pharmacy_name": "Lumen 0373 Family Pharmacy",
+        "total_estimated_exposure": "152777.79"
+      },
+      {
+        "pharmacy_id": "REF-000011",
+        "pharmacy_name": "Timber 0011 Care Pharmacy",
+        "total_estimated_exposure": "152777.77"
+      },
+      {
+        "pharmacy_id": "REF-000057",
+        "pharmacy_name": "Quartz 0057 Family Pharmacy",
+        "total_estimated_exposure": "152777.77"
+      },
+      {
+        "pharmacy_id": "REF-000103",
+        "pharmacy_name": "Orchard 0103 Health Pharmacy",
+        "total_estimated_exposure": "152777.77"
+      }
+    ]
+  },
+  {
+    "id": "q04",
+    "question": "How have claimed units, supported units, and excess units changed by month?",
+    "sql": "SELECT governed_case_features.review_period, round(sum(governed_case_features.claimed_units), 2) AS claimed_units, round(sum(governed_case_features.supported_units), 2) AS supported_units, round(sum(governed_case_features.excess_units), 2) AS excess_units FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period",
+    "statement_id": "01f1e3b9-d866-1bf1-8479-e6bd33f48c6b",
+    "columns": [
+      "review_period",
+      "claimed_units",
+      "supported_units",
+      "excess_units"
+    ],
+    "rows": [
+      {
+        "review_period": "2025-11",
+        "claimed_units": "32693.00",
+        "supported_units": "569565.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2025-12",
+        "claimed_units": "32992.00",
+        "supported_units": "566607.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-01",
+        "claimed_units": "32443.00",
+        "supported_units": "566282.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-02",
+        "claimed_units": "32542.00",
+        "supported_units": "563403.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-03",
+        "claimed_units": "32728.00",
+        "supported_units": "566565.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-04",
+        "claimed_units": "32977.00",
+        "supported_units": "567864.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-05",
+        "claimed_units": "32975.00",
+        "supported_units": "569077.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-06",
+        "claimed_units": "32819.00",
+        "supported_units": "565730.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-07",
+        "claimed_units": "32707.00",
+        "supported_units": "565114.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-08",
+        "claimed_units": "33044.00",
+        "supported_units": "566707.00",
+        "excess_units": "2532.00"
+      },
+      {
+        "review_period": "2026-10",
+        "claimed_units": "32913.00",
+        "supported_units": "570423.00",
+        "excess_units": "2532.00"
+      }
+    ]
+  },
+  {
+    "id": "q05",
+    "question": "Compare estimated exposure across regions and show each region's share of total exposure.",
+    "sql": "SELECT governed_case_features.region, round(sum(governed_case_features.estimated_overpayment), 2) AS estimated_exposure, round(100.0 * sum(governed_case_features.estimated_overpayment) / sum(sum(governed_case_features.estimated_overpayment)) OVER (), 2) AS exposure_share_percent FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.region ORDER BY estimated_exposure DESC, governed_case_features.region",
+    "statement_id": "01f1e3b9-d906-133c-ad9c-215bbb928f33",
+    "columns": [
+      "region",
+      "estimated_exposure",
+      "exposure_share_percent"
+    ],
+    "rows": [
+      {
+        "region": "WEST",
+        "estimated_exposure": "3985320.57",
+        "exposure_share_percent": "40.57"
+      },
+      {
+        "region": "SOUTH",
+        "estimated_exposure": "2645632.92",
+        "exposure_share_percent": "26.93"
+      },
+      {
+        "region": "NORTHEAST",
+        "estimated_exposure": "2088988.00",
+        "exposure_share_percent": "21.27"
+      },
+      {
+        "region": "MIDWEST",
+        "estimated_exposure": "1103254.36",
+        "exposure_share_percent": "11.23"
+      }
+    ]
+  },
+  {
+    "id": "q06",
+    "question": "How much exposure involves cross-channel activity versus single-channel activity?",
+    "sql": "SELECT CASE WHEN governed_case_features.has_cross_channel_activity THEN 'Cross-channel activity' ELSE 'Single-channel activity' END AS activity_type, round(sum(governed_case_features.estimated_overpayment), 2) AS total_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.has_cross_channel_activity ORDER BY total_estimated_exposure DESC, activity_type",
+    "statement_id": "01f1e3b9-d97c-1a66-9b24-7db52b2a193d",
+    "columns": [
+      "activity_type",
+      "total_estimated_exposure"
+    ],
+    "rows": [
+      {
+        "activity_type": "Cross-channel activity",
+        "total_estimated_exposure": "5555235.05"
+      },
+      {
+        "activity_type": "Single-channel activity",
+        "total_estimated_exposure": "4267960.79"
+      }
+    ]
+  },
+  {
+    "id": "q07",
+    "question": "Show the ten case records with the highest estimated overpayment exposure, breaking ties by excess units.",
+    "sql": "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.excess_units, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features ORDER BY governed_case_features.estimated_overpayment DESC, governed_case_features.excess_units DESC, governed_case_features.case_id LIMIT 10",
+    "statement_id": "01f1e3b9-da3f-1fed-9bff-3c88829c938f",
+    "columns": [
+      "case_id",
+      "pharmacy_name",
+      "product_code",
+      "review_period",
+      "excess_units",
+      "estimated_overpayment"
+    ],
+    "rows": [
+      {
+        "case_id": "50375d16e6cdb9bee5d626b3003d73be91afc3c7442f95f4bc596f718835300d",
+        "pharmacy_name": "Timber 0235 Health Pharmacy",
+        "product_code": "99999-0301-01",
+        "review_period": "2025-11",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.79"
+      },
+      {
+        "case_id": "50dce036c9dbdb79a9a7cf99c7058309c5dc91996dbad1722e58a5d837021142",
+        "pharmacy_name": "Orchard 0327 Care Pharmacy",
+        "product_code": "99999-0301-01",
+        "review_period": "2026-01",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.79"
+      },
+      {
+        "case_id": "9b47147353c3e4fd0e1cf3908b99d2b8b593c280d7d7132388a47e81377f0ecd",
+        "pharmacy_name": "Quartz 0281 Community Pharmacy",
+        "product_code": "99999-0102-01",
+        "review_period": "2025-12",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.79"
+      },
+      {
+        "case_id": "cd6705dddbaa2aead8d8aae93791d84adc26d9fc2a5ca8f5483d3c256402407a",
+        "pharmacy_name": "Lumen 0373 Family Pharmacy",
+        "product_code": "99999-0102-01",
+        "review_period": "2026-02",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.79"
+      },
+      {
+        "case_id": "0b17368ac8b483e680b26da562e0ed2a1b14c82c13beb5edb23ec0e36df61877",
+        "pharmacy_name": "Orchard 0103 Health Pharmacy",
+        "product_code": "99999-0301-01",
+        "review_period": "2026-07",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.77"
+      },
+      {
+        "case_id": "31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64",
+        "pharmacy_name": "Aster 0241 Family Pharmacy",
+        "product_code": "99999-0102-01",
+        "review_period": "2026-10",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.77"
+      },
+      {
+        "case_id": "3b7ba9fd5175ee3bb5cd1e61e632775417cb128c762a234201f66d7f4a8ea9f3",
+        "pharmacy_name": "Harbor 0419 Health Pharmacy",
+        "product_code": "99999-0301-01",
+        "review_period": "2026-03",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.77"
+      },
+      {
+        "case_id": "46db4cb8b07bb599325af9b59c954e800e9f7261fbc6aca6bb1bc003e71376ed",
+        "pharmacy_name": "Timber 0011 Care Pharmacy",
+        "product_code": "99999-0301-01",
+        "review_period": "2026-05",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.77"
+      },
+      {
+        "case_id": "56801fee4f5645973398022792b2e071f4f96380e0177a682a1816fcfc97faa1",
+        "pharmacy_name": "Lumen 0149 Community Pharmacy",
+        "product_code": "99999-0102-01",
+        "review_period": "2026-08",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.77"
+      },
+      {
+        "case_id": "77039103eb6625099e758d12b1e248d2a8b6f5d5deffc2534191156fcc88d014",
+        "pharmacy_name": "Quartz 0057 Family Pharmacy",
+        "product_code": "99999-0102-01",
+        "review_period": "2026-06",
+        "excess_units": "495.00",
+        "estimated_overpayment": "152777.77"
+      }
+    ]
+  },
+  {
+    "id": "q08",
+    "question": "For case 31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64, show its quantities, channel evidence, identity evidence, entity status, and estimated exposure.",
+    "sql": "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.entity_status, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.claimed_units, governed_case_features.supported_units, governed_case_features.excess_units, governed_case_features.manufacturer_units, governed_case_features.wholesaler_units, governed_case_features.has_cross_channel_activity, governed_case_features.matched_cross_channel_pairs, governed_case_features.has_multiple_source_identities, governed_case_features.source_identity_count, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.case_id = '31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64'",
+    "statement_id": "01f1e3b9-dab8-1287-9bff-9eac9d571ab5",
+    "columns": [
+      "case_id",
+      "pharmacy_name",
+      "entity_status",
+      "product_code",
+      "review_period",
+      "claimed_units",
+      "supported_units",
+      "excess_units",
+      "manufacturer_units",
+      "wholesaler_units",
+      "has_cross_channel_activity",
+      "matched_cross_channel_pairs",
+      "has_multiple_source_identities",
+      "source_identity_count",
+      "estimated_overpayment"
+    ],
+    "rows": [
+      {
+        "case_id": "31881b473deba7f758f4ac3cb385346641f12c35a88f7f70e9a5245f2602ba64",
+        "pharmacy_name": "Aster 0241 Family Pharmacy",
+        "entity_status": "ACTIVE",
+        "product_code": "99999-0102-01",
+        "review_period": "2026-10",
+        "claimed_units": "540.00",
+        "supported_units": "45.00",
+        "excess_units": "495.00",
+        "manufacturer_units": "45.00",
+        "wholesaler_units": "0.00",
+        "has_cross_channel_activity": "true",
+        "matched_cross_channel_pairs": "1",
+        "has_multiple_source_identities": "false",
+        "source_identity_count": "1",
+        "estimated_overpayment": "152777.77"
+      }
+    ]
+  },
+  {
+    "id": "q09",
+    "question": "How many cases involve multiple source identities, and how does their average estimated exposure compare with other cases?",
+    "sql": "SELECT CASE WHEN governed_case_features.has_multiple_source_identities THEN 'Multiple source identities' ELSE 'Other cases' END AS case_group, count(DISTINCT governed_case_features.case_id) AS case_count, round(avg(governed_case_features.estimated_overpayment), 2) AS avg_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.has_multiple_source_identities ORDER BY avg_estimated_exposure DESC, case_group",
+    "statement_id": "01f1e3b9-db31-1130-9106-b8a3a896b5f7",
+    "columns": [
+      "case_group",
+      "case_count",
+      "avg_estimated_exposure"
+    ],
+    "rows": [
+      {
+        "case_group": "Other cases",
+        "case_count": "19686",
+        "avg_estimated_exposure": "493.91"
+      },
+      {
+        "case_group": "Multiple source identities",
+        "case_count": "2159",
+        "avg_estimated_exposure": "46.32"
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Compare suspected cases for active, pending, and closed pharmacy entities.",
+    "sql": "SELECT governed_case_features.entity_status, count(DISTINCT governed_case_features.case_id) AS suspected_case_count FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.entity_status IN ('ACTIVE', 'PENDING', 'CLOSED') GROUP BY governed_case_features.entity_status ORDER BY suspected_case_count DESC, governed_case_features.entity_status",
+    "statement_id": "01f1e3b9-dc04-14be-9f2e-556e5ecbecef",
+    "columns": [
+      "entity_status",
+      "suspected_case_count"
+    ],
+    "rows": [
+      {
+        "entity_status": "ACTIVE",
+        "suspected_case_count": "20973"
+      },
+      {
+        "entity_status": "CLOSED",
+        "suspected_case_count": "872"
+      }
+    ]
+  },
+  {
+    "id": "q11",
+    "question": "By month, how many pharmacy and product combinations have claimed units greater than supported units?",
+    "sql": "SELECT governed_case_features.review_period, count(*) AS excess_claim_combinations FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.claimed_units > governed_case_features.supported_units GROUP BY governed_case_features.review_period ORDER BY governed_case_features.review_period",
+    "statement_id": "01f1e3b9-dcd7-106e-9553-8f95ef64d6bc",
+    "columns": [
+      "review_period",
+      "excess_claim_combinations"
+    ],
+    "rows": [
+      {
+        "review_period": "2025-11",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2025-12",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-01",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-02",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-03",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-04",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-05",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-06",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-07",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-08",
+        "excess_claim_combinations": "13"
+      },
+      {
+        "review_period": "2026-10",
+        "excess_claim_combinations": "13"
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "question": "Which cases combine excess claimed units, cross-channel activity, and multiple source identities?",
+    "sql": "SELECT governed_case_features.case_id, governed_case_features.pharmacy_name, governed_case_features.product_code, governed_case_features.review_period, governed_case_features.excess_units, round(governed_case_features.estimated_overpayment, 2) AS estimated_overpayment FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.claimed_units > governed_case_features.supported_units AND governed_case_features.has_cross_channel_activity = true AND governed_case_features.has_multiple_source_identities = true ORDER BY governed_case_features.estimated_overpayment DESC, governed_case_features.case_id",
+    "statement_id": "01f1e3b9-dd4f-1599-8131-0139a4c9c08c",
+    "columns": [
+      "case_id",
+      "pharmacy_name",
+      "product_code",
+      "review_period",
+      "excess_units",
+      "estimated_overpayment"
+    ],
+    "rows": [
+      {
+        "case_id": "5ca92443ba6a6b87bd3dfd72715aa4c530ba2cdc4dae4235ae3c9b375ad1c12a",
+        "pharmacy_name": "Willow 0172 Health Pharmacy",
+        "product_code": "99999-0301-01",
+        "review_period": "2026-06",
+        "excess_units": "20.00",
+        "estimated_overpayment": "50000.00"
+      },
+      {
+        "case_id": "617c03c477d1fa9d29e87f75ee334eaa52792f086725f8870ad6bb3ee18a92f0",
+        "pharmacy_name": "Timber 0235 Health Pharmacy",
+        "product_code": "99999-0101-01",
+        "review_period": "2025-12",
+        "excess_units": "21.00",
+        "estimated_overpayment": "50000.00"
+      }
+    ]
+  },
+  {
+    "id": "q13",
+    "question": "How many case records are missing pharmacy ID, pharmacy name, region, or state code?",
+    "sql": "SELECT count(*) AS missing_case_record_count FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features WHERE governed_case_features.pharmacy_id IS NULL OR trim(governed_case_features.pharmacy_id) = '' OR governed_case_features.pharmacy_name IS NULL OR trim(governed_case_features.pharmacy_name) = '' OR governed_case_features.region IS NULL OR trim(governed_case_features.region) = '' OR governed_case_features.state_code IS NULL OR trim(governed_case_features.state_code) = ''",
+    "statement_id": "01f1e3b9-ddcb-1b70-8ecc-6226412bf8b0",
+    "columns": [
+      "missing_case_record_count"
+    ],
+    "rows": [
+      {
+        "missing_case_record_count": "0"
+      }
+    ]
+  },
+  {
+    "id": "q14",
+    "question": "How many case records are missing claimed units, supported units, excess units, or estimated exposure?",
+    "sql": "SELECT sum(CASE WHEN governed_case_features.claimed_units IS NULL THEN 1 ELSE 0 END) AS missing_claimed_units, sum(CASE WHEN governed_case_features.supported_units IS NULL THEN 1 ELSE 0 END) AS missing_supported_units, sum(CASE WHEN governed_case_features.excess_units IS NULL THEN 1 ELSE 0 END) AS missing_excess_units, sum(CASE WHEN governed_case_features.estimated_overpayment IS NULL THEN 1 ELSE 0 END) AS missing_estimated_exposure FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features",
+    "statement_id": "01f1e3b9-de9f-146d-bc4d-4ecab9c5f678",
+    "columns": [
+      "missing_claimed_units",
+      "missing_supported_units",
+      "missing_excess_units",
+      "missing_estimated_exposure"
+    ],
+    "rows": [
+      {
+        "missing_claimed_units": "0",
+        "missing_supported_units": "0",
+        "missing_excess_units": "0",
+        "missing_estimated_exposure": "0"
+      }
+    ]
+  },
+  {
+    "id": "q15",
+    "question": "For each product, compare total claimed units, manufacturer units, wholesaler units, supported units, and excess units.",
+    "sql": "SELECT governed_case_features.product_code, round(sum(governed_case_features.claimed_units), 2) AS claimed_units, round(sum(governed_case_features.manufacturer_units), 2) AS manufacturer_units, round(sum(governed_case_features.wholesaler_units), 2) AS wholesaler_units, round(sum(governed_case_features.supported_units), 2) AS supported_units, round(sum(governed_case_features.excess_units), 2) AS excess_units FROM vandelay.rebate_fraud.governed_case_features AS governed_case_features GROUP BY governed_case_features.product_code ORDER BY governed_case_features.product_code",
+    "statement_id": "01f1e3b9-df0d-1b30-b88f-13944905f873",
+    "columns": [
+      "product_code",
+      "claimed_units",
+      "manufacturer_units",
+      "wholesaler_units",
+      "supported_units",
+      "excess_units"
+    ],
+    "rows": [
+      {
+        "product_code": "99999-0101-01",
+        "claimed_units": "90413.00",
+        "manufacturer_units": "649951.00",
+        "wholesaler_units": "904399.00",
+        "supported_units": "1554350.00",
+        "excess_units": "7101.00"
+      },
+      {
+        "product_code": "99999-0102-01",
+        "claimed_units": "90003.00",
+        "manufacturer_units": "650604.00",
+        "wholesaler_units": "903638.00",
+        "supported_units": "1554242.00",
+        "excess_units": "7408.00"
+      },
+      {
+        "product_code": "99999-0201-01",
+        "claimed_units": "90093.00",
+        "manufacturer_units": "658156.00",
+        "wholesaler_units": "901944.00",
+        "supported_units": "1560100.00",
+        "excess_units": "6620.00"
+      },
+      {
+        "product_code": "99999-0301-01",
+        "claimed_units": "90324.00",
+        "manufacturer_units": "656381.00",
+        "wholesaler_units": "912264.00",
+        "supported_units": "1568645.00",
+        "excess_units": "6723.00"
+      }
+    ]
+  }
+]

@@ -3,7 +3,7 @@
 **Protocol date:** 2026-11-17  
 **Status:** Locked before results are produced
 
-> `[REWRITE IN YOUR WORDS]` This protocol defines how the fraud-prioritization approach will be judged. Do not replace the original protocol after seeing results. Add any change as a dated amendment and retain the original results.
+This protocol defines how the fraud-prioritization approach will be judged. Do not replace the original protocol after seeing results. Add any change as a dated amendment and retain the original results.
 
 ## Evaluation Question
 

@@ -1,30 +1,28 @@
 # Rebate Fraud Prevention Use Case
 
-> `[YOUR WORDS]` This is a working draft. Rewrite the narrative in your own words before submission.
-
 ## 1. One-Line Outcome
 
-`[YOUR WORDS]` Reduce fraudulent rebate leakage by recovering 25% of the current $10 million annual overpayment exposure—an illustrative $2.5 million per year—while creating an auditable path from suspicious claim to pharmacy response and legal escalation.
+Reduce the amount of money we pay to fraudulent rebate requests. A good outcome is recovering 25% of the current $10 million annual overpayment amount. Every interaction we have with suspected fraudsters must be documented as we go from investigating suspected fraud to legal escalation.
 
 ## 2. The Problem in the Customer's Words
 
-`[YOUR WORDS]` We cannot reliably determine whether every rebate claim is supported by product purchased. A pharmacy may request rebates for more units than it bought, submit the same underlying activity through both medical and pharmacy insurance channels, or appear under several names and identifiers. Our analysts must reconcile manufacturer sales, wholesaler distribution records, and rebate claims while comparing names, addresses, phone numbers, and fax numbers to recognize that apparently different claimants are the same business. The pharmacy population also changes as locations open and close. This fragmented process contributes to an estimated $10 million in fraudulent overpayments each year and leaves communications, responses, and legal escalations without one complete paper trail.
+We cannot reliably determine whether every rebate claim reflects the actual amount of product purchased. A pharmacy may request rebates for more units than it bought, submit the same underlying activity through both medical and pharmacy insurance channels, or appear under several names and identifiers. When accurate pharmacy identifiers are missing, our analysts must reconcile manufacturer sales, wholesaler distribution records, and rebate claims while comparing pharmacy names, addresses, phone numbers, and fax numbers to recognize that apparently different claimants are the same business. The pharmacy population also changes as locations open and close. This fragmented process contributes to an estimated $10 million in fraudulent overpayments each year and leaves communications, responses, and legal escalations without one complete paper trail. When we find suspected fraud we must act immediately, before the suspect pharmacy closes.
 
 ## 3. Why Now
 
-- `[YOUR WORDS]` **Growth increases exposure:** Expansion into additional markets will introduce more pharmacies, claims, and identity changes. If the current control gap scales with the business, fraudulent overpayments will grow with it.
-- `[YOUR WORDS]` **Gross-to-net pressure is increasing:** Life Sciences manufacturers face continued pressure to control rebate leakage and explain where contracted dollars go. `[CHECK]`
-- `[YOUR WORDS]` **Auditability matters:** Finance, compliance, and legal stakeholders increasingly expect traceable evidence for payment holds, recoveries, disputes, and escalation decisions. `[CHECK]`
+**Growth increases exposure:** Expansion into additional markets will introduce more pharmacies, claims, and identity changes. If the current control gap scales with the business, fraudulent overpayments will grow with it.
+**Gross-to-net pressure is increasing:** Life Sciences and medical technology manufacturers face continued pressure to control rebate leakage and explain where contracted dollars go.
+**Auditability matters:** Finance, compliance, and legal stakeholders increasingly expect traceable evidence for payment holds, recoveries, disputes, and escalation decisions.
 
 ## 4. Personas
 
 ### Director of Rebate Operations
 
-`[YOUR WORDS]` The Director runs the operational investigation process. Each month, they must tell the SVP which suspected cases were verified as fraud, how investigations are progressing, whether pharmacies responded, and which cases require escalation. Their primary KPI is the number and rate of suspected fraud cases verified as real fraud; they also monitor investigation aging and the completeness of the evidence trail.
+The Director runs the operational investigation process. Each month, they must tell the SVP which suspected cases were verified as fraud, how investigations are progressing, whether pharmacies responded, and which cases require escalation. Their primary KPI is the number and rate of suspected fraud cases verified as real fraud; they also monitor investigation aging and the completeness of the evidence trail.
 
 ### SVP of Contracting and Rebates
 
-`[YOUR WORDS]` The SVP owns the financial and control outcome across contracting and rebate operations. Today, their team reconciles sales, distribution, and rebate records while manually resolving pharmacy identities and tracking outreach across disconnected tools. Each quarter, the SVP reports recovered overpayments and remaining fraud exposure to an executive finance or risk committee. Their primary KPI is dollars in fraudulent overpayments recovered.
+The SVP owns the financial and control outcome across contracting and rebate operations. Today, their team reconciles sales, distribution, and rebate records while manually resolving pharmacy identities and tracking outreach across disconnected tools. Each quarter, the SVP reports recovered overpayments and remaining fraud exposure to an executive finance or risk committee. Their primary KPI is dollars in fraudulent overpayments recovered.
 
 ## 5. Today Versus Tomorrow
 
@@ -92,4 +90,4 @@ Each stage consumes governed output from the preceding stage: ingested records b
 | The $2.5M value may look invented. | Recovery rates are not yet validated. | Keep the $10M exposure tied to the customer scenario, label 25% as a planning assumption, and show sensitivity at prototype review. | The connected journey must generate measurable verified cases and recoveries to test the hypothesis. |
 | Named vendors or real entities would make the submission look customer-specific or internal. | It could violate synthetic-data requirements and distract from the reusable industry pattern. | Keep all organizations, systems, pharmacies, communications, and identities synthetic and vendor-neutral. | Every stage operates only on synthetic records. |
 
-`[YOUR WORDS]` The strongest demo is one traceable case: two apparently different pharmacy records are resolved to one entity; medical and pharmacy claims overlap; total claimed quantity exceeds documented purchases; an investigator reviews the evidence; outreach and a synthetic response are recorded; the case is verified; recovery is entered; and repeated behavior is escalated to legal with the complete paper trail.
+The strongest demo is one traceable case: two apparently different pharmacy records are resolved to one entity; medical and pharmacy claims overlap; total claimed quantity exceeds documented purchases; an investigator reviews the evidence; the investigator drafts a communication and emails it and a synthetic response are recorded; the case is verified; recovery is entered; and repeated behavior is escalated to legal with the complete paper trail.

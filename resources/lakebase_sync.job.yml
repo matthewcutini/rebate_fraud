@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    rebate_fraud_lakebase_sync:
+      name: ${bundle.target}-rebate-fraud-lakebase-sync
+      performance_target: STANDARD
+      tags:
+        aidevkit_project: rebate_fraud
+      tasks:
+        - task_key: upsert_operational_cases
+          environment_key: lakebase_environment
+          notebook_task:
+            notebook_path: ../src/serve/upsert_lakebase.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              endpoint: ${var.lakebase_endpoint}
+              database: ${var.lakebase_database_name}
+      environments:
+        - environment_key: lakebase_environment
+          spec:
+            client: "4"
+            dependencies:
+              - databricks-sdk>=0.81.0
+              - psycopg[binary]>=3.2.0

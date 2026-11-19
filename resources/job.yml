@@ -1,0 +1,90 @@
+resources:
+  jobs:
+    rebate_fraud_orchestration:
+      name: ${bundle.target}-rebate-fraud-orchestration
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      performance_target: STANDARD
+      tags:
+        aidevkit_project: rebate_fraud
+        workflow: connected_journey
+      tasks:
+        - task_key: refresh_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.rebate_fraud_pipeline.id}
+            full_refresh: false
+
+        - task_key: refresh_governed_consumption
+          depends_on:
+            - task_key: refresh_pipeline
+          run_job_task:
+            job_id: ${resources.jobs.apply_governance.id}
+
+        - task_key: score_cases
+          depends_on:
+            - task_key: refresh_governed_consumption
+          sql_task:
+            file:
+              path: ../src/ai/score.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: explain_top_cases
+          depends_on:
+            - task_key: score_cases
+          sql_task:
+            file:
+              path: ../src/ai/explain_v2.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+            parameters:
+              generator_model: ${var.ai_generator_model}
+
+        - task_key: evaluate_ai
+          depends_on:
+            - task_key: explain_top_cases
+          environment_key: orchestration_environment
+          notebook_task:
+            notebook_path: ../src/ai/evaluate.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              judge_model: ${var.ai_judge_model}
+              prompt_version: prompt-v2
+
+        - task_key: sync_operational
+          depends_on:
+            - task_key: evaluate_ai
+          environment_key: orchestration_environment
+          notebook_task:
+            notebook_path: ../src/serve/upsert_lakebase.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              endpoint: ${var.lakebase_endpoint}
+              database: ${var.lakebase_database_name}
+
+        - task_key: verify_connected_outputs
+          depends_on:
+            - task_key: sync_operational
+          environment_key: orchestration_environment
+          notebook_task:
+            notebook_path: ../src/orchestration/verify.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+              endpoint: ${var.lakebase_endpoint}
+              database: ${var.lakebase_database_name}
+              app_name: ${var.app_name}
+              genie_space_id: ${var.genie_space_id}
+
+      environments:
+        - environment_key: orchestration_environment
+          spec:
+            client: "4"
+            dependencies:
+              - "databricks-sdk>=0.81.0"
+              - "mlflow[databricks]>=3.16.0"
+              - "psycopg[binary]>=3.2.0"
+              - "requests>=2.32.0"

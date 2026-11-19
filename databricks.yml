@@ -26,6 +26,27 @@ variables:
   ai_judge_model:
     description: Different-family foundation model used by MLflow judges
     default: databricks-gpt-5-6-luna
+  lakebase_project:
+    description: Lakebase Postgres Autoscaling project ID
+    default: rebate-fraud-ops
+  lakebase_branch:
+    description: Full Lakebase branch resource name
+    default: projects/rebate-fraud-ops/branches/production
+  lakebase_database:
+    description: Full Lakebase database resource name
+    default: projects/rebate-fraud-ops/branches/production/databases/databricks-postgres
+  lakebase_database_name:
+    description: PostgreSQL database name
+    default: databricks_postgres
+  lakebase_endpoint:
+    description: Full Lakebase endpoint resource name
+    default: projects/rebate-fraud-ops/branches/production/endpoints/primary
+  app_name:
+    description: Workspace-global Databricks App name
+    default: rebate-ops-${workspace.current_user.domain_friendly_name}
+  genie_space_id:
+    description: Governed rebate-fraud Genie space ID
+    default: 01f1e3b93f4b11e79b2fbfcd74547821
 
 workspace:
   host: https://8259554820748444.4.gcp.databricks.com

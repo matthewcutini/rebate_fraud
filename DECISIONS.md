@@ -1,34 +1,30 @@
 # Decisions
 
-> `[YOUR WORDS]` Rewrite each decision and rationale in your own words before submission.
-
 ## 2026-11-17 — Rebate Fraud Use Case
 
 - **Decision:** Focus the prototype on pharmacy rebate overclaims, cross-channel duplicate claims, changing pharmacy identities, investigation communications, recoveries, and legal escalation.
 - **Options considered:** A generic operational-improvement story; a narrow duplicate-claim detector; an end-to-end rebate fraud prevention workflow.
-- **Why:** `[YOUR WORDS]` The end-to-end workflow connects fraudulent payment detection to a measurable recovery outcome and preserves the required paper trail.
+- **Why:** The end-to-end workflow connects fraudulent payment detection to a measurable recovery outcome and preserves the required paper trail. This is operational data that the rebate fraud team can use to collaborate and enhance their efforts far more than they've ever been able to when working from various spreadsheets.
 
 ## 2026-11-17 — AI Approach
 
 - **Decision:** Use a hybrid approach: fuzzy entity resolution, explainable anomaly or risk scoring, and grounded GenAI assistance for outreach and legal case summaries.
 - **Options considered:** Rules and fuzzy matching only; supervised ML; the hybrid approach.
-- **Why:** `[YOUR WORDS]` The hybrid approach supports changing pharmacy identities and explainable prioritization without allowing AI to make final fraud or legal decisions.
+- **Why:** The hybrid approach supports changing pharmacy identities and explainable prioritization without allowing AI to make final fraud or legal decisions.
 
 ## 2026-11-17 — Value Hypothesis
 
 - **Decision:** Use a balanced recovery target of 25% of the estimated $10 million annual fraudulent overpayment exposure, producing an illustrative $2.5 million annual value.
 - **Options considered:** Conservative 10% recovery; balanced 25% recovery; ambitious 40% recovery.
-- **Why:** `[YOUR WORDS]` The balanced target is material but remains explicitly labeled as an assumption requiring validation.
+- **Why:** This is an early version of the app. As the app evolves its capabilities, it may be able to recover higher amounts of fraudulent overpayments.
 
 ## 2026-11-17 — Data Sources
 
 - **Decision:** Use synthetic, vendor-neutral representations of manufacturer sales, wholesaler distribution, 867 distribution, rebate claims, pharmacy identity, and investigation workflow data.
 - **Options considered:** Name real source vendors; omit wholesaler data; use vendor-neutral synthetic source systems including wholesalers.
-- **Why:** `[YOUR WORDS]` Wholesaler records are necessary to reconcile product movement with rebate quantities while vendor-neutral synthetic data protects confidentiality and meets FE Bar rules.
+- **Why:** Wholesaler records are necessary to reconcile product movement with rebate quantities while vendor-neutral synthetic data protects confidentiality and meets FE Bar rules.
 
 ## 2026-11-17 — Build Design
-
-> `[REWRITE IN YOUR WORDS]` Rewrite these decisions and reasons before submission.
 
 | Decision | Choice | Alternative considered | Reason |
 |---|---|---|---|
@@ -46,12 +42,66 @@
 
 ## 2026-11-17 — Lakebase Feasibility Gate
 
-- **Decision:** `[REWRITE IN YOUR WORDS]` Treat Lakebase availability in the GCP workspace as a build-stopping preflight. If unavailable, use a workspace with supported Lakebase access or obtain approved preview access; do not silently substitute another database.
-- **Alternative considered:** Replace Lakebase with another operational store to keep building.
-- **Why:** `[REWRITE IN YOUR WORDS]` Lakebase is a required stage of the connected FE Bar journey, and a substitute would misrepresent the architecture.
+- **Decision:** Use Lakebase in the GCP workspace provided.
+- **Alternative considered:** Use an AWS or Azure workspace.
+- **Why:** Lakebase is available in GCP workspaces.
+
+## 2026-11-18 — Lakeflow Data Quality Policy Using Expectations
+
+- **Decision:** Drop and quarantine claims with missing identifiers, non-positive requested units, invalid service dates, unknown product codes, or exact retransmissions; warn and retain late claims, trimmed names, and missing phone or fax values; fail the update on manifest mismatches, incompatible schema drift, or empty critical claims input.
+- **Options considered:** Warn and retain every defect; fail on every defect; use severity-based handling tied to whether a record can be traced and reconciled.
+- **Why:** Severity-based handling preserves explainable evidence without allowing structurally unreliable or unreconcilable claims into business results.
+
+## 2026-11-18 — Unity Catalog Access Model [REWRITE IN YOUR WORDS]
+
+- **Decision:** Govern a separate consumption table with data-driven regional row access and sensitive-contact masking. The SVP sees all regions with contact fields masked, the Director sees all regions with contact fields visible, and a regional analyst sees only an assigned region with contact fields visible. Legal-only case filtering will be added when legal escalation status exists in the operational case table.
+- **Options considered:** Regional row filtering; assignment-based filtering dependent on Lakebase; national access with masking only.
+- **Why:** Regional scope is realistic, independently demonstrable now, and does not make pipeline output depend on the identity that runs the pipeline.
+
+## 2026-11-18 — Governance Test Identity [REWRITE IN YOUR WORDS]
+
+- **Decision:** Create and use the dedicated non-admin service principal `febar-rebate-governance-test` for effective-permission tests.
+- **Options considered:** Reuse a project service principal; reuse a broader non-admin principal; create a dedicated principal.
+- **Why:** A dedicated identity makes positive, masked, denied, and cleanup checks repeatable without relying on administrator group membership.
 
 ## 2026-11-18 — Intelligent Rebate-Fraud Step [REWRITE IN YOUR WORDS]
 
 - **Decision:** Use a deterministic explainable score with named point components and drivers on every case, then use structured `ai_query` only for the top 20 cases to draft an explanation and next action.
 - **Options considered:** Explainable score plus targeted GenAI; a supervised model tracked with MLflow; text classification or extraction only.
 - **Why:** The selected approach fits the build time box, keeps prioritization auditable, limits model cost, and avoids defending a classifier trained only on synthetic labels.
+
+## 2026-11-18 — Lakebase Operational Record Model [YOUR WORDS]
+
+- **Decision:** Use a Lakeflow Job to upsert machine-owned fields from `gold_fraud_cases` into one mutable Lakebase case record while preserving investigator-owned status, owner, priority, notes, due date, decision, recovery, and legal-escalation fields. Record every actual insert or update with a PostgreSQL trigger.
+- **Options considered:** A read-only synced table; separate read-only source and human-edit tables joined by the app; one operational case table with column-limited upserts and immutable history.
+- **Why:** The selected pattern gives investigators one current case without allowing an analytics refresh to erase their work, while the trigger produces a database-enforced paper trail for every actual change.
+
+## 2026-11-18 — Lakebase Access Boundary [YOUR WORDS]
+
+- **Decision:** Use Unity Catalog policies for governed Delta analytics; use Lakebase connection, schema, table, constraint, and trigger controls for the operational store; enforce investigator assignment, legal-only row visibility, workflow transitions, and field-level permissions in the app.
+- **Options considered:** Treat Unity Catalog policies as if they covered Lakebase rows; implement PostgreSQL row-level security immediately; use explicit app authorization over least-privilege Postgres grants.
+- **Why:** Unity Catalog row filters and masks do not automatically propagate into Postgres. App authorization is the clearest prototype boundary, while PostgreSQL RLS remains a future hardening option.
+
+## 2026-11-18 — Genie Governed Source Design [YOUR WORDS]
+
+- **Decision:** Build the executive Genie space only on `governed_case_features`, exclude sensitive contact columns, and replace questions that require unavailable fraud outcomes or AI scores with governed exposure, reconciliation, identity, trend, drill-down, and completeness questions.
+- **Options considered:** Use several ungoverned gold tables; mix a metric view with its base table; use one row-filtered and masked governed gold table.
+- **Why:** The single governed source preserves Unity Catalog row filters and masks, avoids ambiguous duplicate semantics, and prevents Genie from presenting suspected exposure as verified fraud or recovery.
+
+## 2026-11-18 — Databricks App Experience [YOUR WORDS]
+
+- **Decision:** Use an operational investigation console with four screens: Operations Overview, Priority Case Queue, Case Workspace, and Ask Genie. Use persona lenses to change emphasis without changing authorization.
+- **Options considered:** Executive dashboard; operational investigation console; minimal neutral workspace; a fifth CustomerLake entity-verification screen.
+- **Why:** The operational console connects governed analytics to action and a complete Lakebase paper trail. CustomerLake was removed when the requested workspace capability was confirmed unavailable.
+
+## 2026-11-18 — App Execution Identity [YOUR WORDS]
+
+- **Decision:** Execute SQL warehouse and Genie requests on behalf of the signed-in user, while using the app service principal only for the shared Lakebase operational schema.
+- **Options considered:** App service principal for every request; signed-in user for every resource; mixed identity by resource.
+- **Why:** Mixed identity preserves Unity Catalog row filters and masks for analytics while retaining controlled shared write access to operational case records and database-enforced history.
+
+## 2026-11-19 — Connected Job Trigger [YOUR WORDS]
+
+- **Decision:** Use one manually triggered Lakeflow Job with explicit serial dependencies from pipeline refresh through governed consumption, scoring, AI evaluation, Lakebase sync, and connected-output verification. Limit it to one concurrent run and queue overlapping requests.
+- **Options considered:** File arrival on a final manifest; a recurring schedule; manual execution.
+- **Why:** Manual execution keeps the fixed demo evidence reproducible and prevents late data from changing the deck, while the dependency graph, queue, and rerun proof still demonstrate production-safe orchestration.

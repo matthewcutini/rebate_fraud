@@ -1,12 +1,8 @@
 # FE Bar Build Plan
 
-> `[YOUR WORDS]` This plan reflects the approved use case and design choices. Rewrite narrative sections in your own words before submission.
-
 ## 0. Build-Stopping Preflight
 
-Before implementation, verify that the GCP workspace exposes Lakebase Postgres Autoscaling and the required AppKit Lakebase integration. Current product guidance lists Lakebase Autoscaling as generally available on AWS and Azure, not GCP. If the `vandelay` workspace does not expose the required `databricks postgres` APIs, stop: move the build to a workspace with Lakebase or obtain approved preview access. Do not replace Lakebase with an unrelated database and do not create any Lakebase object until the project, branch, database, and app-owned schema are approved.
-
-Also verify that the SQL warehouse is serverless and supports AI Functions, that the selected `system.ai.*` model service is available, and that the CLI is upgraded from `v1.19.0` to at least `v1.20.0` before selecting AppKit execution identity modes.
+Verify that the SQL warehouse is serverless and supports AI Functions, that the selected `system.ai.*` model service is available, and that the CLI is upgraded from `v1.19.0` to at least `v1.20.0` before selecting AppKit execution identity modes.
 
 ## 1. Connected Data Flow
 
@@ -109,7 +105,7 @@ Deleting a stage breaks the journey: without Lakeflow there are no conformed cla
 - **Inputs:** Analytics queries over `vandelay.rebate_fraud.gold_fraud_metrics` and `gold_fraud_cases`; Genie Agent responses; Lakebase `rebate_ops` tables.
 - **Outputs:** Human case status, communications, recovery entries, and escalation events in Lakebase; no direct mutation of synced analytical tables.
 - **Features:** Node.js, TypeScript, React, AppKit, analytics and Lakebase capabilities derived from `databricks apps manifest`, Genie integration, service-principal resource access, server-side pagination, and required loading/empty/error/stale states.
-- **Screens:** (1) Executive Summary with exposure, verified fraud, recoveries, freshness, and embedded Genie; (2) Case Queue with filters and server-side pagination; (3) Case Detail with evidence, explanation, outreach, response, and event trail; (4) Legal Escalations with escalation reason and complete paper trail.
+- **Screens:** (1) Executive Summary with exposure, verified fraud, recoveries, freshness, and embedded Genie; (2) Case Queue with filters and server-side pagination; (3) Case Detail with evidence, explanation, outreach, response, and event trail; (4) Legal Escalations with escalation reason and complete paper trail; (5) Pharmacy entity matching to help deduplicate pharmacies.
 - **Trust:** Show signed-in identity, generated Genie SQL, streaming/error status, data freshness, source, and an “AI-generated—verify” disclosure.
 - **Verification:** AppKit validation, type generation, updated Playwright smoke tests, deployed app status read-back, API read/write test, and UI smoke test using synthetic cases.
 - **Evidence:** `evidence/P07_app_validate.txt`, `evidence/P07_app_smoke.txt`, and `evidence/P07_app_api_readback.json`.
