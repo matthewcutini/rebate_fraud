@@ -10,6 +10,7 @@ WITH resolved_claim_rows AS (
     claims.claim_channel,
     claims.product_code,
     claims.service_date,
+    claims.submitted_at,
     claims.rebate_units,
     claims.rebate_amount,
     claims.pharmacy_name
@@ -34,6 +35,7 @@ WITH resolved_claim_rows AS (
     count(DISTINCT pharmacy_name) AS source_identity_count,
     max(pharmacy_name) AS observed_pharmacy_name
   FROM resolved_claim_rows
+  WHERE submitted_at <= CAST(date_add(last_day(service_date), 1) AS TIMESTAMP)
   GROUP BY 1, 2, 3
 ), cross_channel_matches AS (
   SELECT

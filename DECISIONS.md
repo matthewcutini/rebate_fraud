@@ -49,3 +49,9 @@
 - **Decision:** `[REWRITE IN YOUR WORDS]` Treat Lakebase availability in the GCP workspace as a build-stopping preflight. If unavailable, use a workspace with supported Lakebase access or obtain approved preview access; do not silently substitute another database.
 - **Alternative considered:** Replace Lakebase with another operational store to keep building.
 - **Why:** `[REWRITE IN YOUR WORDS]` Lakebase is a required stage of the connected FE Bar journey, and a substitute would misrepresent the architecture.
+
+## 2026-11-18 — Intelligent Rebate-Fraud Step [REWRITE IN YOUR WORDS]
+
+- **Decision:** Use a deterministic explainable score with named point components and drivers on every case, then use structured `ai_query` only for the top 20 cases to draft an explanation and next action.
+- **Options considered:** Explainable score plus targeted GenAI; a supervised model tracked with MLflow; text classification or extraction only.
+- **Why:** The selected approach fits the build time box, keeps prioritization auditable, limits model cost, and avoids defending a classifier trained only on synthetic labels.

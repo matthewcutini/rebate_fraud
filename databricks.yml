@@ -20,6 +20,12 @@ variables:
   governance_test_principal:
     description: Application ID of the non-admin governance test principal
     default: 961bac9c-adf7-4dab-8197-748a848983ad
+  ai_generator_model:
+    description: Foundation model endpoint used for structured case explanations
+    default: databricks-claude-haiku-4-5
+  ai_judge_model:
+    description: Different-family foundation model used by MLflow judges
+    default: databricks-gpt-5-6-luna
 
 workspace:
   host: https://8259554820748444.4.gcp.databricks.com

@@ -24,3 +24,10 @@
 - **Changed:** Limited duplicate verification to the planted high-exposure population, constrained materially different aliases to exactly 60 pharmacies, ensured the 36 benign aliases never overlap a planted fraud entity, and replaced the inventory byte helper with an ASCII-safe count.
 - **Why:** The answer key must be deterministic, recomputable from the raw files, and free of false-positive counts.
 - **Verified:** Bundle validation passed; deployed run `716333328535686` succeeded; the managed volume was read back; 72 files across 12 periods were inventoried; 120,000 claim rows and every planted count matched the answer key.
+
+## 2026-11-18 — Intelligent Scoring and GenAI Evaluation
+
+- **Tried:** Released the final synthetic month, enforced the decision-time claim cutoff, scored governed cases with named components, generated structured explanations for only the top 20, and evaluated them with four MLflow 3 judges from a different model family.
+- **Failed:** The first bundle validation used the wrong serverless task type; the first SQL run referenced `ai_query.response` instead of this workspace's `result` field; the first model endpoint was deprecated; the initial truth-key prefix did not match the conformed reference IDs; prompt v2 failed to improve groundedness and reduced the no-invented-data pass rate.
+- **Changed:** Used a serverless notebook for held-out release, refreshed governed consumption before scoring, switched generation to `databricks-claude-haiku-4-5`, judged with `databricks-gpt-5-6-luna`, corrected truth keys, and tightened prompt v2 without changing the judges.
+- **Why:** The intelligent step must remain connected, reproducible, temporally fair, and honest when results do not support the desired claim.
