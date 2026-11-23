@@ -105,3 +105,21 @@
 - **Decision:** Use one manually triggered Lakeflow Job with explicit serial dependencies from pipeline refresh through governed consumption, scoring, AI evaluation, Lakebase sync, and connected-output verification. Limit it to one concurrent run and queue overlapping requests.
 - **Options considered:** File arrival on a final manifest; a recurring schedule; manual execution.
 - **Why:** Manual execution keeps the fixed demo evidence reproducible and prevents late data from changing the deck, while the dependency graph, queue, and rerun proof still demonstrate production-safe orchestration.
+
+## 2026-11-23 — Business Deck Story [YOUR WORDS]
+
+- **Decision:** Use the approved business narrative that moves from visible suspected exposure to a bounded pilot for verified outcomes, with separate operating and executive value for the Director of Rebate Operations and the SVP of Contracting, Rebates.
+- **Options considered:** A technology-led architecture deck; a narrow fraud-detection demo deck; an outcome-led business deck with the answer up front, demo setup, persona KPIs, transparent value logic, trust, architecture, pilot, and close.
+- **Why:** The outcome-led structure makes the customer decision clear while preserving the distinction between suspected exposure, verified fraud, recoverable value, and realized recovery.
+
+## 2026-11-23 — Business Deck Value Framing [YOUR WORDS]
+
+- **Decision:** Show the value case as a formula only: $9,823,195.85 measured suspected exposure × verified-fraud rate × achievable recovery rate = recovery value, with both rates measured in the pilot and no illustrative dollar result.
+- **Options considered:** Formula only; formula plus an illustrative 25% planning-target example ($2,455,798.96); the customer-stated $10M × 25% = $2.5M.
+- **Why:** Every number on the slide comes from live evidence in `evidence/HEADLINES.md`, so no recovery figure is claimed before human-adjudicated pilot outcomes exist.
+
+## 2026-11-23 — Business Deck Build Route [YOUR WORDS]
+
+- **Decision:** Rebuild the approved 12-slide deck on a copy of the "*TEMPLATE Databricks Corporate Slide 2025" Google Slides template and export it to PDF, replacing the Markdown fallback.
+- **Options considered:** Retry on the corporate template; keep the Markdown-to-PDF fallback.
+- **Why:** The earlier failure came from exporting the full template; copying it inside Drive and exporting only the finished 12-slide deck stays within the connector's limits and gives the evaluator a template-branded deck.

@@ -88,3 +88,27 @@
 - **Changed:** Aligned queries to the deployed schemas, normalized harmless Genie labels without weakening numeric comparison, omitted free-form Genie prose that repeated synthetic entity names, and retained structured SQL/results as the answer proof.
 - **Why:** Evaluators need live, readable, reproducible text evidence without secrets, identities, raw encoded notebook exports, or hand-entered result values.
 - **Verified:** `tools/generate_evidence.py` compiled and regenerated all stage files from `--profile vandelay`; the final Genie run matched 15 of 15 benchmarks; privacy scans found no emails, tokens, or synthetic entity names; `git diff --check` passed.
+
+## 2026-11-19 — Evaluator README
+
+- **Tried:** Drafted an outcome-first repository README linking the customer problem, delivered outcomes, value boundaries, connected stages, approved trade-offs, AI-assisted workflow, repository layout, run commands, and live evidence.
+- **Failed:** The rewritten headline rounded the approved exposure figure and described suspected exposure as already caught and mitigated, which exceeded the evidence.
+- **Changed:** Restored the exact approved monetary value and described it as simulated suspected rebate overpayment exposure surfaced for investigation.
+- **Why:** The evaluator should see the customer outcome immediately without confusing suspected exposure with verified fraud, prevented loss, or recovered cash.
+- **Verified:** The final README contains no rewrite markers; all quantitative business claims match `evidence/HEADLINES.md`; every connected stage links to implementation and proof; `git diff --check` passes.
+
+## 2026-11-23 — Business Deck
+
+- **Tried:** Built the approved outcome-led business deck for rebate operations and contracting leadership using the corporate Slides template as the preferred source.
+- **Failed:** The exact Google Slides template was available in Drive, but its exported presentation exceeded the Drive connector's file-size limit. The first Markdown PDF renderer lacked its Python dependency, and the dependency-enabled retry lacked native GObject libraries. The first PDF flow slide also rendered unsupported arrow glyphs, and one later image-rendering dependency fetch returned HTTP 403.
+- **Changed:** Used the explicitly approved Markdown fallback; created a Databricks-styled widescreen PDF with DM Sans and corporate colors; replaced glyph arrows with drawn connectors; reused the cached offline image renderer after the network fetch failure.
+- **Why:** The fallback preserves a readable FE Bar artifact, speaker notes, evidence-only numbers, and visual quality without bypassing the managed Google Drive connector.
+- **Verified:** The PDF contains the approved business story and evidence-only quantitative claims; all pages were rendered to images and visually inspected; no overlapping or cut-off text remained after the connector fix.
+
+## 2026-11-23 — Business Deck on the Corporate Template
+
+- **Tried:** Rebuilt the approved 12-slide outline on a Drive copy of the "*TEMPLATE Databricks Corporate Slide 2025" template with `deck/build_gslides.py`, using only the template's light-master layouts, DM Sans and theme colours, and the formula-only value case.
+- **Failed:** The first trash call on the draft copy returned HTTP 404 because Drive places copies of a shared-drive file in that shared drive, and the call omitted shared-drive support. The skill validator reported 8 `text_style_off_by_one` errors that were deliberate large numerals ("11" and step numbers), not styling defects. The first render had regular-weight titles, an unbalanced cover subtitle, and excess empty space on two slides.
+- **Changed:** Copied the final deck into My Drive and moved both shared-drive copies to the trash; switched content titles to bold 28 pt; line-broke the cover subtitle; tightened the problem panel and trust cards; rebuilt on a fresh template copy and re-exported.
+- **Why:** The deck must follow the corporate template, stay private until sharing is approved, and keep every number traceable to `evidence/HEADLINES.md`.
+- **Verified:** Each new slide was inserted directly after a light-master template slide and then moved into place; all 54 template sample slides were removed. The PDF export (12 pages) was rendered page by page and visually inspected, with no overlapping or cut-off text. All body text is 15 pt or larger. All 12 slides carry `[YOUR WORDS]` speaker notes. The only figures on the slides are $9,823,195.85, 110,000, 11 and 21,845 plus the 2026-11-19 measurement date. The final PDF is `deck/rebate_fraud_business_deck.pdf`; the earlier Markdown-route deck, its PDF, stylesheet, fonts and renderer were removed so the repository holds one deck.
